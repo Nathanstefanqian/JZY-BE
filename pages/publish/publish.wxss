@@ -1,0 +1,67 @@
+/* pages/publish/publish.wxss */
+.head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 48rpx;
+  margin-bottom: 48rpx;
+}
+
+.pag {
+  margin-left: auto;
+  color: grey;
+  font-size: 32rpx;
+}
+
+.body {
+  width: 100%;
+}
+
+.box {
+  margin-bottom: 48rpx;
+}
+.box span:first-child {
+  color: red;
+}
+
+.box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  height: 92rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.action-container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.salary {
+  margin-bottom: 48rpx;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150rpx;
+  height: 70rpx;
+  margin-top: 24rpx;
+  margin-left: 20rpx;
+  padding: 10rpx 25rpx;
+  background-color: #f6f8f9;
+  border-radius: 24rpx;
+}

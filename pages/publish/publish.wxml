@@ -1,0 +1,83 @@
+<view class="container">
+  <view class="head">
+    <view class="title">职位关键信息</view>
+    <view class="pag">1/2</view>
+  </view>
+  <view class="body">
+    <view class="box">
+      <span>*</span>
+      <span>职位标题</span>
+      <input type="text" placeholder="请输入标题" />
+    </view>
+    <view class="box" bindtap="onTime">
+      <span>*</span>
+      <span>用工日期与时间</span>
+      <input disabled placeholder="未选择" />
+    </view>
+    <view class="box">
+      <span>*</span>
+      <span>工作地点</span>
+      <input disabled placeholder="请选择工作地点" />
+    </view>
+    <view class="box">
+      <view class="salary-name">
+        <span>*</span>
+        <span>固定薪资</span>
+        <span>*</span>
+        <span>范围薪资</span>
+      </view>
+      <view class="contact">
+        <input placeholder="请输入薪资" />
+        <view class="select" bindtap="onSalary">元/小时</view>
+      </view>
+    </view>
+
+    <view class="box">
+      <span>*</span>
+      <span>联系方式</span>
+      <view class="contact">
+        <input placeholder="请输入微信号" />
+        <view class="select">微信号</view>
+      </view>
+    </view>
+    <van-divider />
+    <button style="width: 100%; background-color: #f6f8f9;" disabled="true">下一步</button>
+  </view>
+</view>
+
+<van-action-sheet show="{{ show }}" title="用工时间"   bind:close="onClose">
+  <view class="action-container">
+    <van-tabs active="{{ active }}" bind:change="onChange" style="width: 100%;">
+      <van-tab title="临时兼职">
+        <van-tree-select
+          items="{{ items }}"
+          main-active-index="{{ mainActiveIndex }}"
+          active-id="{{ activeId }}"
+          bind:click-nav="onClickNav"
+          bind:click-item="onClickItem"
+        />
+        <van-divider />
+        <button style="width: 100%" disabled>完成</button>
+      </van-tab>
+      <van-tab title="长期兼职">
+        <van-tree-select
+          items="{{ items }}"
+          main-active-index="{{ mainActiveIndex }}"
+          active-id="{{ activeId }}"
+          bind:click-nav="onClickNav"
+          bind:click-item="onClickItem"
+        />
+        <van-divider />
+        <button style="width: 100%" disabled>完成</button>
+      </van-tab>
+    </van-tabs>
+  </view>
+</van-action-sheet>
+
+<van-action-sheet
+  title="薪资单位"
+  show="{{ salaryShow }}"
+  actions="{{ actions }}"
+  bind:close="onClose"
+  bind:select="onSelect"
+/>
