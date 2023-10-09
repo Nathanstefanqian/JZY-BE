@@ -1,0 +1,7 @@
+<!--pages/publish-success/publish-success.wxml-->
+<view class="container">
+  <back></back>
+  <view>职位已进入审核</view>
+  <view>预计10分钟内审核完成，请耐心等待</view>
+  <button>我知道了</button>
+</view>

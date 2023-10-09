@@ -3,5 +3,6 @@
   "projectname": "jzy-be",
   "setting": {
     "compileHotReLoad": true
-  }
+  },
+  "libVersion": "3.1.2"
 }

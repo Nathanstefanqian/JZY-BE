@@ -1,11 +1,12 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/job/job",
-    "pages/candidate/cadidate",
     "pages/my/my",
     "pages/candidate/candidate",
-    "pages/publish/publish"
-  ],
+    "pages/publish/publish",
+    "pages/publish-success/publish-success"
+    ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -20,7 +21,7 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/candidate/candidate",
+        "pagePath": "pages/home/home",
         "text": "候选人",
         "iconPath": "assets/candidate.png",
         "selectedIconPath": "assets/candidate-active.png"
@@ -56,6 +57,10 @@
     "van-tree-select": "./dist/tree-select/index",
     "van-divider": "./dist/divider/index",
     "van-button": "./dist/button/index",
-    "van-picker": "./dist/picker/index"
+    "van-picker": "./dist/picker/index",
+    "van-radio": "./dist/radio/index",
+    "van-radio-group": "./dist/radio-group/index",
+    "back": "./component/back/back",
+    "van-empty": "./dist/empty/index"
   }
 }

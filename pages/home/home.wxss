@@ -1,0 +1,11 @@
+
+
+.main-container {
+  box-sizing: border-box;
+  margin-top: 240rpx;
+  border-radius: 42rpx;
+  padding: 20rpx;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}

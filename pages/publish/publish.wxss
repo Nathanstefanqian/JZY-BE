@@ -65,3 +65,26 @@
   background-color: #f6f8f9;
   border-radius: 24rpx;
 }
+
+.desc {
+  display: flex;
+  height: 420rpx !important;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20rpx 25rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.btn {
+  display: flex;
+  margin-bottom: 24rpx;
+}
+
+.btn button:nth-child(2) {
+  background-color: rgba(253, 119, 83, 1);
+  color: #fff;
+  margin-left: 90rpx;
+  width: 100%;
+}

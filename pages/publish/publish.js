@@ -1,26 +1,12 @@
+const { Contact, SalaryTime } = require('../../data/data')
 Page({
   data: {
+    page: 1,
     show: false,
-    salaryShow: true,
+    selectShow: false,
     mainActiveIndex: 0,
     activeId: '',
-    actions: [
-      {
-        name: '元/小时',
-      },
-      {
-        name: '元/天',
-      },
-      {
-        name: '元/周',
-      },
-      {
-        name: '元/月',
-      },
-      {
-        name: '元/其他',
-      },
-    ],
+    actions: [],
     items: [
       {
         text: '每周工作天数',
@@ -82,11 +68,15 @@ Page({
   },
 
   onClose() {
-    this.setData({ show: false, salaryShow: false });
+    this.setData({ show: false, selectShow: false });
   },
   
   onSalary() {
-    this.setData({ salaryShow: true })
+    this.setData({ selectShow: true, actions: SalaryTime, title: '薪资单位' })
+  },
+
+  onContact() {
+    this.setData({ selectShow: true, actions: Contact, title: '联系方式' })
   },
 
   onGetUserInfo(e) {
@@ -103,4 +93,22 @@ Page({
     const activeId = this.data.activeId === detail.id ? null : detail.id;
     this.setData({ activeId });
   },
+
+  onNext() {
+    this.setData({
+      page: 2
+    })
+  },
+
+  onPrevious() {
+    this.setData({
+      page: 1
+    })
+  },
+
+  onSubmit() {
+    wx.navigateTo({
+      url: '../publish-success/publish-success',
+    })
+  }
 });

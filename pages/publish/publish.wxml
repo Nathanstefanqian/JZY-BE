@@ -1,9 +1,10 @@
 <view class="container">
   <view class="head">
-    <view class="title">职位关键信息</view>
-    <view class="pag">1/2</view>
+    <view class="title">{{ page === 1 ? '职位关键信息' : '完善职位信息' }}</view>
+    <view class="pag">{{page}}/2</view>
   </view>
-  <view class="body">
+  <!-- 第一页 -->
+  <view class="body" wx:if="{{ page === 1}}">
     <view class="box">
       <span>*</span>
       <span>职位标题</span>
@@ -37,11 +38,50 @@
       <span>联系方式</span>
       <view class="contact">
         <input placeholder="请输入微信号" />
-        <view class="select">微信号</view>
+        <view class="select" bindtap="onContact">微信号</view>
       </view>
     </view>
     <van-divider />
-    <button style="width: 100%; background-color: #f6f8f9;" disabled="true">下一步</button>
+    <button style="width: 100%; background-color: #f6f8f9;" bindtap="onNext">下一步</button>
+  </view>
+  <!-- 第二页 -->
+  <view class="body" wx:else>
+    <view class="box">
+      <span>* </span>
+      <span>职位描述</span>
+      <textarea type="text" class="desc" placeholder="请输入该职位的描述" />
+    </view>
+    <view class="box">
+      <span>* </span>
+      <span>招聘人数</span>
+      <van-radio-group value="{{ radio }}" bind:change="onChange"   direction="horizontal">
+        <van-radio name="1">1人</van-radio>
+        <van-radio name="2">2人</van-radio>
+        <van-radio name="2">5人</van-radio>
+        <van-radio name="2">10人</van-radio>
+      </van-radio-group>
+    </view>
+    <view class="box">
+      <span>* </span>
+      <span>结算方式</span>
+      <van-radio-group value="{{ radio }}" bind:change="onChange"   direction="horizontal">
+        <van-radio name="1">日结</van-radio>
+        <van-radio name="2">月结</van-radio>
+        <van-radio name="3">周结</van-radio>
+        <van-radio name="4">完工结</van-radio>
+        <van-radio name="5">面议</van-radio>
+      </van-radio-group>
+    </view>
+    <view class="box">
+      <span></span>
+      <span>人员需求（选填）</span>
+      <textarea type="text" class="desc" placeholder="请输入人员的需求" />
+    </view>
+    <van-divider />
+    <view class="btn">
+      <button bindtap="onPrevious">上一步</button>
+      <button bindtap="onSubmit">发布职位</button>
+    </view>
   </view>
 </view>
 
@@ -75,8 +115,8 @@
 </van-action-sheet>
 
 <van-action-sheet
-  title="薪资单位"
-  show="{{ salaryShow }}"
+  title="{{ title }}"
+  show="{{ selectShow }}"
   actions="{{ actions }}"
   bind:close="onClose"
   bind:select="onSelect"
