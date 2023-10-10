@@ -12,5 +12,9 @@
 .bg {
   width: 100vw;
   height: 100vh;
-  background-color: #192236;
+  background-color: #fd7753;
+}
+.orange {
+  background-color: #fd7753 !important;
+  color: #fff;
 }

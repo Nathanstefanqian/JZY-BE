@@ -61,6 +61,7 @@
     "van-radio": "./dist/radio/index",
     "van-radio-group": "./dist/radio-group/index",
     "back": "./component/back/back",
-    "van-empty": "./dist/empty/index"
+    "van-empty": "./dist/empty/index",
+    "van-popup": "./dist/popup/index"
   }
 }

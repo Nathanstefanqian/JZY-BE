@@ -1,10 +1,40 @@
 <!--pages/home/home.wxml-->
 <view class="bg">
-<span>招聘仓库管理员</span>
+  <span>空格</span>
+  <view class="head">候选人</view>
+  <view class="job">
+    <span>招聘仓库管理员</span>
+    <view class="btn" bindtap="onToggle">
+      <span>切换职位</span>
+    </view>
+  </view>
   <view class="main-container">
-    <van-tabs active="{{ active }}" bind:change="onChange">
+    <van-tabs active="{{ active }}" bind:change="onChange" color="#fd7753">
       <van-tab title="待录取">
-        <van-empty description="暂无候选人" />
+        <van-empty description="暂无候选人" wx:if="{{ isEmpty }}" />
+        <view class="tab-container">
+          <view class="text">共 2 人待录取</view>
+          <view class="box" wx:for="{{ [1,2,3]}}">
+            <view class="top">
+              <image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar"/>
+              <view class="info">
+                <view class="info-top">
+                  <span class="name">张仔豪</span>
+                  <view class="time">今天22:11投递</view>
+                </view>
+                <view class="info-bot">
+                  <span>19岁</span><span> | </span><span>学生党</span><span> | </span><span>专科</span>
+                </view>
+              </view>
+            </view>
+            <view class="bottom">
+              <view class="ibtn first">☎️</view>
+              <view class="ibtn">拒绝</view>
+              <view class="ibtn">初筛</view>
+              <view class="ibtn">录取</view>
+            </view>
+          </view>
+        </view>
       </van-tab>
       <van-tab title="通过初筛">内容 2</van-tab>
       <van-tab title="已录取">内容 3</van-tab>
@@ -12,3 +42,28 @@
     </van-tabs>
   </view>
 </view>
+
+<van-action-sheet
+  show="{{ show }}"
+  title="切换职位"
+  actions="{{ actions }}"
+  bind:close="onClose"
+  bind:select="onSelect"
+>
+<view class="action-container">
+  <span>已发布 2 个职位，切换查看候选人简历</span>
+  <view class="body">
+    <view class="action-box" wx:for="{{[1,2,3]}}">
+      <view class="left">
+        <view class="left-title">招聘仓库管理员</view>
+        <view class="left-info">
+          1 待录取 | 1 通过初筛
+        </view>
+      </view>
+      <view class="right">
+        <view class="ibtn">切换</view>
+      </view>
+    </view>
+  </view>
+</view>
+</van-action-sheet>
