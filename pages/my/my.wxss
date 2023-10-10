@@ -1,6 +1,5 @@
 .box {
   width: 100%;
-  font-size: 40rpx;
   margin-bottom: 40rpx;
 }
 
@@ -18,7 +17,7 @@
 .avatar image {
   width: 120rpx;
   height: 120rpx;
-  border-radius: 50%;
+  border-radius: 20%;
 }
 
 .profile .detail {
@@ -31,21 +30,16 @@
   margin-bottom: 15rpx;
 }
 
-.detail span:nth-child(2) {
-  font-size: 30rpx;
-  color: rgba(102, 110, 122, 1);
-  margin-bottom: 15rpx;
-}
-
 .detail button {
   width: 164rpx;
-  height: 56rpx;
-  border-radius: 4rpx;
-  font-size: 20rpx;
+  height: 50rpx;
+  border-radius: 8rpx;
+  font-size: 30rpx;
   color: rgba(253, 119, 83, 1);
   background: rgba(255, 255, 255, 1);
   border: 1px solid rgba(253, 119, 83, 1);
-  margin: 0;
+  margin-top: 20rpx;
+  padding: 0;
 }
 
 .divider {
@@ -57,19 +51,29 @@
 .main {
   box-sizing: border-box;
   width: 100%;
-  padding: 50rpx;
+  padding: 100rpx 30rpx;
 }
 
 .box {
+  display: flex;
+}
+.box view {
   display: flex;
 }
 .icon {
   width: 10%;
 }
 
-.icon image {
-  width: 34rpx;
-  height: 34rpx;
+.icon image,
+.box image {
+  width: 42rpx;
+  height: 42rpx;
+  margin-top: 3rpx;
+}
+
+.arrow-right {
+  width: 40rpx;
+  margin-left: auto;
 }
 
 .box .right {
@@ -78,12 +82,8 @@
   margin-bottom: 40rpx;
 }
 
-.right span:first-child {
-  font-size: 24rpx;
-  margin-bottom: 20rpx;
-}
 
-.right span:nth-child(2) {
-  font-size: 24rpx;
-  color: rgba(102, 110, 122, 1);
+.right span{
+  font-size: 35rpx;
+  margin-bottom: 20rpx;
 }
