@@ -9,3 +9,68 @@
   width: 100%;
   background-color: #fff;
 }
+
+.candidate {
+  width: 650rpx;
+  margin: 20rpx auto;
+  padding: 20rpx;
+  background-color:#f6f7fb;
+}
+
+.detail-container {
+  display: flex;
+}
+
+.detail {
+  width: 100%;
+}
+
+.detail-container image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 15%;
+  margin-right: 20rpx;
+}
+
+.namebox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: large;
+  font-weight: 600;
+  margin-bottom: 15rpx;
+}
+
+.time{
+  font-size: 25rpx;
+  color: #707070;
+}
+
+.age {
+  font-size: 30rpx;
+  color: #707070;
+}
+
+.choice {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.choice image {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.choice button {
+  width: 150rpx;
+  font-size: 25rpx;
+  font-weight: 500;
+  border-radius: 18rpx;
+  background-color: #fff;
+}

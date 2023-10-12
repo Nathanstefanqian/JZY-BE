@@ -4,7 +4,27 @@
   <view class="main-container">
     <van-tabs active="{{ active }}" bind:change="onChange">
       <van-tab title="待录取">
-        <van-empty description="暂无候选人" />
+        <!-- <van-empty description="暂无候选人" /> -->
+        <view class="candidate-list">
+          <view class="candidate">
+            <view class="detail-container">
+              <image src="../../assets/avatar.png" mode="aspectFill"/>
+              <view class="detail">
+                <view class="namebox">
+                  <text class="name">大沟叭</text>
+                  <text class="time">今天5：21投递</text>
+                </view>
+                <view class="age">18岁 | 学生党 | 博士</view>
+              </view>
+            </view>
+            <view class="choice">
+              <image src="../../assets/call.svg" mode=""/>
+              <button>拒绝</button>
+              <button>初筛</button>
+              <button>录取</button>
+            </view>
+          </view>
+        </view>
       </van-tab>
       <van-tab title="通过初筛">内容 2</van-tab>
       <van-tab title="已录取">内容 3</van-tab>
