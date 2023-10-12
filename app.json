@@ -1,10 +1,10 @@
 {
   "pages": [
-    "pages/my/my",
-    "pages/home/home",
     "pages/job/job",
+    "pages/home/home",
     "pages/candidate/candidate",
     "pages/publish/publish",
+    "pages/my/my",
     "pages/publish-success/publish-success"
     ],
   "window": {

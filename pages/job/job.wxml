@@ -2,7 +2,23 @@
 <view class="bg">
   <view class="head">我的职位</view>
   <view class="main-container">
-      
+      <view class="joblist">
+
+        <view class="jobtitle">
+          <text>摄影师</text>
+          <image src="../../assets/more.svg" mode=""/>
+        </view>
+
+        <view class="jobstatus">
+          <image src="../../assets/time.svg" mode=""/>
+          <text>招聘中·发布于 10.09</text>
+        </view>
+
+        <view class="jobdata">
+          <image src="../../assets/data.svg" alt=""/>
+          <text>报名 2</text>
+        </view>
+      </view>
   </view>
 </view>
 
