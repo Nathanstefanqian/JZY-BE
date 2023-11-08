@@ -11,6 +11,7 @@
       <view class="bottom">登录后享受更多权益和功能</view>
     </view>
   </view>
+  
 
   <view class="card flex-row">
     <view class="progress-card">
@@ -26,7 +27,7 @@
     </view>
   </view>
   <view class="card">
-    <!-- <image src="../../assets/employ.svg" mode="aspectFit"/> -->
+    <image src="../../assets/employ.svg" mode="aspectFit"/>
     <view class="col2">
       <view class="title">我要兼职</view>
       <view class="subtitle">海量真实兼职任你挑</view>
@@ -38,19 +39,15 @@
   <view class="card flex-column">
     <view class="func">
       <view class="func-box">
-        <!-- <image src="../../assets/star_my.svg" mode="aspectFit"/> -->
-        <view class="bottom">我的收藏</view>
-      </view>
-      <view class="func-box">
-        <!-- <image src="../../assets/toggle.svg" mode="aspectFit"/> -->
+        <image src="../../assets/toggle.svg" mode="aspectFit"/>
         <view class="bottom">切换至兼职端</view>
       </view>
       <view class="func-box">
-        <!-- <image src="../../assets/proxy.svg" mode="aspectFit"/> -->
+        <image src="../../assets/proxy.svg" mode="aspectFit"/>
         <view class="bottom">协议与准则</view>
       </view>      
       <view class="func-box">
-        <!-- <image src="../../assets/setting.svg" mode="aspectFit"/> -->
+        <image src="../../assets/setting.svg" mode="aspectFit"/>
         <view class="bottom">我的设置</view>
       </view>
     </view>
