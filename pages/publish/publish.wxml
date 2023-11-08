@@ -8,37 +8,46 @@
     <view class="box">
       <span>*</span>
       <span>职位标题</span>
-      <input type="text" placeholder="请输入标题" />
+      <input type="text" placeholder="请输入标题" value="{{ jobtitle }}" bindinput="onTitleInput" />
     </view>
     <view class="box" bindtap="onTime">
       <span>*</span>
       <span>用工日期与时间</span>
-      <input disabled placeholder="未选择" />
+      <input disabled placeholder="未选择" value="{{ workDesc }}" />
     </view>
-    <view class="box">
+    <view class="box" bindtap="onLocation">
       <span>*</span>
       <span>工作地点</span>
-      <input disabled placeholder="请选择工作地点" />
+      <input disabled placeholder="请选择工作地点" value="{{ workPlace.name}}" />
     </view>
     <view class="box">
       <view class="salary-name">
-        <span>*</span>
-        <span>固定薪资</span>
-        <span>*</span>
-        <span>范围薪资</span>
+        <view bindtap="onToggleSalary" class="{{ salaryShow ? 'highlight' : ''     }}">
+          <span>*</span>
+          <span>固定薪资</span>   
+        </view>
+        <view bindtap="onToggleSalary" class="{{ !salaryShow ? 'highlight' : ''     }}"> 
+          <span>*</span>
+          <span>范围薪资</span>      
+        </view>
       </view>
       <view class="contact">
-        <input placeholder="请输入薪资" />
-        <view class="select" bindtap="onSalary">元/小时</view>
+        <view wx:if="{{ salaryShow }}">
+          <input type="number" bindinput="onSalaryInput" value="{{ salaryEnd }}" placeholder="请输入薪资" />
+        </view>
+        <view wx:else >
+          <input type="number" bindinput="onSalaryStartInput" value="{{ salaryStart }}" placeholder="请输入薪资" />
+          <input type="number" bindinput="onSalaryInput" value="{{ salaryEnd }}" placeholder="请输入薪资" />
+        </view>
+        <view class="select" bindtap="onSalary">{{ select.selectTime }}</view>
       </view>
     </view>
-
     <view class="box">
       <span>*</span>
       <span>联系方式</span>
       <view class="contact">
-        <input placeholder="请输入微信号" />
-        <view class="select" bindtap="onContact">微信号</view>
+        <input placeholder= "请输入联系方式" value="{{ contactValue }}" bindinput="onContactValueInput" />
+        <view class="select" bindtap="onContact">{{ select.selectContact}}</view>
       </view>
     </view>
     <van-divider />
@@ -49,33 +58,33 @@
     <view class="box">
       <span>* </span>
       <span>职位描述</span>
-      <textarea type="text" class="desc" placeholder="请输入该职位的描述" />
+      <textarea type="text" class="desc" placeholder="请输入该职位的描述" value="{{ desc }}" bindinput="onDescInput" />
     </view>
     <view class="box">
       <span>* </span>
       <span>招聘人数</span>
-      <van-radio-group value="{{ radio }}" bind:change="onChange"   direction="horizontal">
-        <van-radio name="1">1人</van-radio>
-        <van-radio name="2">2人</van-radio>
-        <van-radio name="2">5人</van-radio>
-        <van-radio name="2">10人</van-radio>
+      <van-radio-group value="{{ HireNumberRadio }}" bind:change="onHireNumberChange" direction="horizontal">
+        <van-radio name="1人">1人</van-radio>
+        <van-radio name="2人">2人</van-radio>
+        <van-radio name="5人">5人</van-radio>
+        <van-radio name="10人">10人</van-radio>
       </van-radio-group>
     </view>
     <view class="box">
       <span>* </span>
       <span>结算方式</span>
-      <van-radio-group value="{{ radio }}" bind:change="onChange"   direction="horizontal">
-        <van-radio name="1">日结</van-radio>
-        <van-radio name="2">月结</van-radio>
-        <van-radio name="3">周结</van-radio>
-        <van-radio name="4">完工结</van-radio>
-        <van-radio name="5">面议</van-radio>
+      <van-radio-group value="{{ PaymentRadio }}" bind:change="onPaymentChange" direction="horizontal">
+        <van-radio name="日结">日结</van-radio>
+        <van-radio name="月结">月结</van-radio>
+        <van-radio name="周结">周结</van-radio>
+        <van-radio name="完工结">完工结</van-radio>
+        <van-radio name="面议">面议</van-radio>
       </van-radio-group>
     </view>
     <view class="box">
       <span></span>
       <span>人员需求（选填）</span>
-      <textarea type="text" class="desc" placeholder="请输入人员的需求" />
+      <textarea type="text" class="desc" placeholder="请输入人员的需求" value="{{ demand }}" bindinput="onDemandInput" />
     </view>
     <van-divider />
     <view class="btn">
@@ -87,28 +96,30 @@
 
 <van-action-sheet show="{{ show }}" title="用工时间"   bind:close="onClose">
   <view class="action-container">
-    <van-tabs active="{{ active }}" bind:change="onChange" style="width: 100%;">
+    <van-tabs active="{{ tabActive }}" bind:change="onTabChange" style="width: 100%;" animated wx:if="{{ show }}">
       <van-tab title="临时兼职">
         <van-tree-select
-          items="{{ items }}"
-          main-active-index="{{ mainActiveIndex }}"
-          active-id="{{ activeId }}"
+          items="{{ shortTimeitems }}"
+          main-active-index="{{ short.mainActiveIndex }}"
+          active-id="{{ short.activeId }}"
+          max="5"
+          selected-icon="success"
           bind:click-nav="onClickNav"
           bind:click-item="onClickItem"
         />
         <van-divider />
-        <button style="width: 100%" disabled>完成</button>
+        <button style="width: 100%" bindtap="onTimeConfirm">完成</button>
       </van-tab>
       <van-tab title="长期兼职">
         <van-tree-select
-          items="{{ items }}"
-          main-active-index="{{ mainActiveIndex }}"
-          active-id="{{ activeId }}"
-          bind:click-nav="onClickNav"
-          bind:click-item="onClickItem"
+          items="{{ longTimeitems }}"
+          main-active-index="{{ long.mainActiveIndex }}"
+          active-id="{{ long.activeId }}"
+          bind:click-nav="onClickLongNav"
+          bind:click-item="onClickLongItem"
         />
         <van-divider />
-        <button style="width: 100%" disabled>完成</button>
+        <button style="width: 100%" bindtap="onTimeConfirm">完成</button>
       </van-tab>
     </van-tabs>
   </view>
@@ -120,4 +131,11 @@
   actions="{{ actions }}"
   bind:close="onClose"
   bind:select="onSelect"
+/>
+
+<van-calendar
+  show="{{ calendarShow }}"
+  type="range"
+  bind:close="onClose"
+  bind:confirm="onConfirm"
 />

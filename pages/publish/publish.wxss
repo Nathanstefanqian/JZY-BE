@@ -20,12 +20,20 @@
 .box {
   margin-bottom: 48rpx;
 }
+
 .box span:first-child {
   color: red;
 }
 
+.box .salary-name {
+  display: flex;
+}
+
+.salary-name view:nth-child(2) {
+  margin-left: 20rpx;
+}
+
 .box input {
-  width: 100%;
   box-sizing: border-box;
   padding: 10rpx 25rpx;
   height: 92rpx;
@@ -51,6 +59,12 @@
 .contact {
   display: flex;
   align-items: center;
+}
+.contact view {
+  display: flex;
+}
+.contact view input:nth-child(2) {
+  margin-left: 20rpx;
 }
 
 .select {
@@ -87,4 +101,8 @@
   color: #fff;
   margin-left: 90rpx;
   width: 100%;
+}
+
+.highlight {
+  color: red;
 }

@@ -34,8 +34,13 @@ const Contact = [
   }
 ]
 
+const params = [
+  '微信名','头像', '姓名', '性别', '手机号', '认证类型'
+]
+
 
 module.exports = {
   SalaryTime,
-  Contact
+  Contact,
+  params
 }

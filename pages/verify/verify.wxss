@@ -1,0 +1,10 @@
+/* pages/verify/verify.wxss */
+
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  border: solid 1rpx #000;
+  margin-bottom: 40rpx;
+}

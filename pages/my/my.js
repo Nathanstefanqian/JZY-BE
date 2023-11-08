@@ -1,66 +1,85 @@
 // pages/my/my.js
+// const user = wx.cloud.database().collection('user')
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    isLogin: wx.getStorageSync('isLogin'),
+    avatarUrl: wx.getStorageSync('avatarUrl') || '../../assets/boy.svg',
+    name: wx.getStorageSync('name'),
+    major: wx.getStorageSync('major'),
+    grade: wx.getStorageSync('grade'),
+    data: [1,2,3,4]
+  },
+
+  onLoad() {
 
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  onEdit() {
+    wx.navigateTo({
+      url: '../edit/edit'
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  onTap() {
+    wx.navigateTo({
+      url: '../star/star',
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  onExit() {
+    wx.clearStorageSync()
+    wx.setStorageSync('isLogin', false)
+    wx.showToast({ title: '退出成功' })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
+  // async onLogin(e) {
+  //   const res = await user.where({ _openid: 'oGJPU5X4rWM6geXlgV3C9WRAazf' }).get()
+  //   if (res.data.length === 0) {
+  //     wx.showModal({
+  //       title: '快去注册！', content: '当前账号没有注册，是否注册？',
+  //       success: res => {
+  //         if (res.confirm) {
+  //           wx.navigateTo({
+  //             url: '../edit/edit',
+  //           })
+  //         }
+  //         else {
+  //           console.log('用户取消注册')
+  //         }
+  //       }
+  //     })
+  //   }
+  //   else {
+  //     console.log(res.data)
+  //     const data= res.data[0]
+  //     for(const key in data) {
+  //       wx.setStorageSync(key, data[key])
+  //     }
+  //     wx.setStorageSync('isLogin', true)
+  //   }
+  // },
 
+  onPersonal(e) {
+    wx.navigateTo({
+      url: '../personal/personal',
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
+  onVerify(e) {
+    wx.navigateTo({
+      url: '../verify/verify'
+    })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
+  onBasic(e) {
+    wx.navigateTo({
+      url: '../edit/edit',
+    })
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  onState() {
+    wx.navigateTo({
+      url: '../state/state',
+    })
   }
 })

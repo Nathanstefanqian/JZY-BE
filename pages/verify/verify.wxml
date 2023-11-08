@@ -1,0 +1,35 @@
+<!--pages/verify/verify.wxml-->
+<back></back>
+<view class="container">
+  <span>您即将进行{{ !company ? '企业' : '个人'}}实名认证</span>
+  <span bindtap="onToggleCompany">企业</span>
+  <view class="card" wx:if="{{ company }}">
+      <span>身份证</span>
+      <input placeholder="请输入身份证" value="{{}}" bindinput="onIdInput" />
+  </view>
+  <view class="card" wx:else>
+    <view>
+        <span>营业商户名称</span>
+        <input placeholder="请输入商户名称" value="{{}}" bindinput="onIdInput" />
+    </view>
+    <view>
+        <span>营业商户地址</span>
+        <input placeholder="请选择地址" value="{{}}" bindinput="onIdInput" />
+    </view>    
+    <view>
+        <span>营业执照编号</span>
+        <input placeholder="请输入营业执照编号" value="{{}}" bindinput="onIdInput" />
+    </view>
+    <view>
+        <span>上传营业执照</span>
+        <input placeholder="点击上传营业执照" value="{{}}" bindinput="onIdInput" />
+    </view>
+    <view>
+      <span>负责人职位</span>
+        <input placeholder="点击选择负责人职位" value="{{}}" bindinput="onIdInput" />
+    </view>
+
+  </view>
+  <span>确认</span>
+
+</view>
