@@ -1,55 +1,53 @@
 <view class="bg">
-  <header>我的</header>
-  <view class="user">
-    <image src="{{ avatarUrl }}" mode="aspectFill"/>
-    <view class="right" wx:if="{{ isLogin }}" bindtap="onPersonal">
-      <view class="top" bindtap="onPersonal">钱卢骏</view>
-      <view class="bottom">{{ major }} {{ grade }}</view>
-    </view>
-    <view class="right" wx:else bindtap="onLogin">
-      <view class="top">登录/注册</view>
-      <view class="bottom">登录后享受更多权益和功能</view>
-    </view>
-  </view>
-  
-
-  <view class="card flex-row">
-    <view class="progress-card">
-      <view class="progress-box">
-        <span>基础信息修改</span>
-        <view class="btn" bindtap="onBasic">{{ isLogin ? '去修改' : '登录查看' }}</view>
-      </view>
-      <van-divider></van-divider>
-      <view class="progress-box">
-        <span>完善实名认证</span>
-        <view class="btn" bindtap="onVerify">去完善</view>
-      </view>
-    </view>
-  </view>
-  <view class="card">
-    <image src="../../assets/employ.svg" mode="aspectFit"/>
-    <view class="col2">
-      <view class="title">我要兼职</view>
-      <view class="subtitle">海量真实兼职任你挑</view>
-    </view>
-    <view class="col3">
-      <view class="btn">寻找兼职</view>
-    </view>
-  </view>
-  <view class="card flex-column">
-    <view class="func">
-      <view class="func-box">
-        <image src="../../assets/toggle.svg" mode="aspectFit"/>
-        <view class="bottom">切换至兼职端</view>
-      </view>
-      <view class="func-box">
-        <image src="../../assets/proxy.svg" mode="aspectFit"/>
-        <view class="bottom">协议与准则</view>
-      </view>      
-      <view class="func-box">
-        <image src="../../assets/setting.svg" mode="aspectFit"/>
-        <view class="bottom">我的设置</view>
-      </view>
-    </view>
-  </view>
+	<header>我的</header>
+	<view class="user" bindtap="onLogin">
+		<image src="{{ avatarUrl }}" mode="aspectFill" />
+		<view class="right" wx:if="{{ isLogin }}" bindtap="onPersonal">
+			<view class="top" bindtap="onPersonal">钱卢骏</view>
+			<view class="bottom">{{ verifyType }} {{ grade }}</view>
+		</view>
+		<view class="right" wx:else>
+			<view class="top">登录/注册</view>
+			<view class="bottom">登录后享受更多权益和功能</view>
+		</view>
+	</view>
+	<view class="card flex-row">
+		<view class="progress-card">
+			<view class="progress-box">
+				<span>基础信息修改</span>
+				<view class="btn" bindtap="onBasic">{{ isLogin ? '去修改' : '登录查看' }}</view>
+			</view>
+			<van-divider></van-divider>
+			<view class="progress-box">
+				<span>完善实名认证</span>
+				<view class="btn" bindtap="onVerify">去完善</view>
+			</view>
+		</view>
+	</view>
+	<view class="card">
+		<image src="../../assets/employ.svg" mode="aspectFit" />
+		<view class="col2">
+			<view class="title">我要兼职</view>
+			<view class="subtitle">海量真实兼职任你挑</view>
+		</view>
+		<view class="col3">
+			<view class="btn">寻找兼职</view>
+		</view>
+	</view>
+	<view class="card flex-column">
+		<view class="func">
+			<view class="func-box">
+				<image src="../../assets/toggle.svg" mode="aspectFit" />
+				<view class="bottom">切换至兼职端</view>
+			</view>
+			<view class="func-box" bindtap="onProxy">
+				<image src="../../assets/proxy.svg" mode="aspectFit" />
+				<view class="bottom">协议与准则</view>
+			</view>
+			<view class="func-box" bindtap="onExit">
+				<image src="../../assets/setting.svg" mode="aspectFit" />
+				<view class="bottom">退出登录</view>
+			</view>
+		</view>
+	</view>
 </view>

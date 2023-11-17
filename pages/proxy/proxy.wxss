@@ -1,0 +1,14 @@
+/* pages/proxy/proxy.wxss */
+.main {
+  box-sizing: border-box;
+  width: 100vw;
+  padding: 0 20rpx;
+  margin-top: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main view {
+  text-indent: 2em; /* 首行缩进两个字符位置 */
+}

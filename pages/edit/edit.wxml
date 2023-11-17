@@ -15,7 +15,7 @@
       <input type="text" placeholder="请输入微信名" bindinput="onNickName" value="{{ nickName }}" />
     </view>
     <view class="box">
-      <span>姓名</span>
+      <span>真实姓名</span>
       <input type="text" placeholder="请输入姓名" bindinput="onName" value= "{{ name }}"  />
     </view>
     <view class="box">

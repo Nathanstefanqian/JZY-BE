@@ -1,5 +1,20 @@
-const { Contact, SalaryTime } = require('../../data/data')
+const { Contact, SalaryTime, isNull } = require('../../data/data')
 const job = wx.cloud.database().collection('job')
+const checkParams = obj => {
+  for (const key in obj) {
+    if (key === 'work' || key === 'workPlace') {
+      console.log(obj[key])
+    }
+    if (!obj[key] && key !== 'salaryStart') {
+      wx.showModal({
+        title: '提示',
+        content: isNull[key],
+        showCancel: false
+      })
+      return
+    }
+  }
+}
 Page({
   data: {
     jobTitle: '',
@@ -17,6 +32,7 @@ Page({
       selectTime: '元/周',
       selectContact: '手机号'
     },
+    isJump: false,
     tabActive: '',
     actions: [],
     salaryStart: '',
@@ -67,6 +83,10 @@ Page({
           {
             text: '晚班',
             id: 8
+          },
+          {
+            text: '不限',
+            id: 9
           }
         ]
       }
@@ -132,10 +152,6 @@ Page({
           {
             text: '晚班',
             id: 4
-          },
-          {
-            text: '自定义',
-            id: 5
           }
         ]
       }
@@ -161,6 +177,100 @@ Page({
     contactValue: ''
   },
 
+  onLoad(e) {
+    var isJump = wx.getStorageSync('isJump');
+    if (isJump) {
+      const res = wx.getStorageSync('job')
+      this.setData({
+        isJump: true,
+        jobTitle: res.jobTitle,
+        work: res.work,
+        HireNumberRadio: res.HireNumberRadio,
+        PaymentRadio: res.PaymentRadio,
+        contactValue: res.contactValue,
+        demand: res.demand,
+        desc: res.desc,
+        salary: res.salary,
+        salaryEnd: res.salaryEnd,
+        salaryStart: res.salaryStart,
+        workPlace: res.workPlace
+      }, () => {
+        console.log(this.data.salaryStart)
+      })
+    }
+  },
+
+  onShow(e) {
+    var isJump = wx.getStorageSync('isJump')
+    if (isJump) {
+      const res = wx.getStorageSync('job')
+      const work = res.work
+      let workDesc = work[3] + ' ; ' + work[0] + ' ; ' + work[1] + ' ; '
+      work[2].map(item => workDesc += item)
+      workDesc += ' ; '
+      this.setData({
+        isJump: true,
+        jobTitle: res.jobTitle,
+        work: res.work,
+        HireNumberRadio: res.HireNumberRadio,
+        PaymentRadio: res.PaymentRadio,
+        contactValue: res.contactValue,
+        demand: res.demand,
+        desc: res.desc,
+        salary: res.salary,
+        salaryEnd: res.salaryEnd,
+        salaryStart: res.salaryStart,
+        workPlace: res.workPlace,
+        workDesc
+      })
+    }
+  },
+
+  onReset() {
+    this.setData({
+      jobTitle: '',
+      title: '',
+      max: 2,
+      page: 1,
+      show: false,
+      selectShow: false,
+      calendarShow: false,
+      timeSelect: '',
+      HireNumberRadio: '',
+      PaymentRadio: '',
+      demand: '',
+      select: {
+        selectTime: '元/周',
+        selectContact: '手机号'
+      },
+      isJump: false,
+      tabActive: '',
+      actions: [],
+      salaryStart: '',
+      salaryEnd: '',
+      salaryShow: true,
+      workDesc: '',
+      work: ['', '', '', ''],
+      shortActive: ['', '', []],
+      longActive: ['', '', []],
+      long: {
+        mainActiveIndex: 0,
+        activeId: ''
+      },
+      short: {
+        mainActiveIndex: 0,
+        activeId: null
+      },
+      workPlace: {
+        name: '',
+        address: '',
+        latitude: '',
+        longitude: ''
+      },
+      contactValue: ''
+    })
+  },
+
   onTitleInput(e) {
     this.setData({ jobTitle: e.detail.value })
   },
@@ -174,12 +284,27 @@ Page({
   },
 
   onTime() {
-    this.setData({ show: true })
+    this.setData({ show: true, work: ['', '', '', ''] })
+  },
+  onCancelModify() {
+    const that = this
+    wx.showModal({
+      title: '提示',
+      content: '确认取消修改该职位吗？',
+      success: res => {
+        if (res.confirm) {
+          wx.setStorageSync('isJump', false)
+          wx.removeStorageSync('job')
+          that.onReset()
+        }
+      }
+    })
   },
 
   onTabChange(e) {
     this.setData({
-      tabActive: e.detail.index
+      tabActive: e.detail.index,
+      work: ['', '', '', '']
     })
   },
 
@@ -210,16 +335,32 @@ Page({
   onTimeConfirm(e) {
     let { tabActive, work, workDesc } = this.data
     work[3] = tabActive ? '长期兼职' : '临时兼职'
-    workDesc = work[3] + ' ; ' + work[0] + ' ; ' + work[1] + ' ; ' + work[2][0] + ',' + work[2][1] + ',' + work[2][2] + ' ; '
-    this.setData({ work, show: false, workDesc }, () => console.log(work))
+    let workIsNull = tabActive ? ['每周工作天数不能为空', '工作时间不能为空', '工作时段不能为空'] : ['工作日期不能为空', '工作时间不能为空', '工作时段不能为空']
+    let isAnyItemEmpty = work.some((item, index) => {
+      if (!item) {
+        wx.showModal({
+          title: '提示',
+          content: workIsNull[index],
+          showCancel: false
+        })
+        return true; // 终止循环
+      }
+    });
 
+    if (isAnyItemEmpty) {
+      return; // 退出函数
+    }
+    workDesc = work[3] + ' ; ' + work[0] + ' ; ' + work[1] + ' ; '
+    work[2].map(item => workDesc += item)
+    workDesc += ' ; '
+    this.setData({ work, show: false, workDesc }, () => console.log(work))
   },
 
   onToggleSalary() {
     let { salaryShow } = this.data
-
     this.setData({
-      salaryShow: !salaryShow
+      salaryShow: !salaryShow,
+      salaryStart: ''
     })
   },
 
@@ -325,9 +466,17 @@ Page({
 
   onNext() {
     const { salaryStart, salaryEnd } = this.data
-    if (!/^\d+(\.\d{1,2})?$/.test(salaryEnd) && (!salaryStart || !/^\d+(\.\d{1,2})?$/.test(salaryStart))) {
+    console.log(salaryStart)
+    if (!/^(?:0|[1-9]\d*)$/.test(salaryEnd) && (!salaryStart || !/^(?:0|[1-9]\d*)$/.test(salaryStart))) {
       wx.showToast({
         title: '请输入合法的金额',
+        icon: 'none'
+      })
+      return
+    }
+    if (salaryStart && parseInt(salaryEnd) <= parseInt(salaryStart)) {
+      wx.showToast({
+        title: '起始金额不能大于等于末尾金额',
         icon: 'none'
       })
       return
@@ -395,20 +544,93 @@ Page({
     } else {
       salary = '范围薪资'
     }
-    console.log(jobTitle, salary, work, workPlace, contactValue, select, demand, desc, PaymentRadio, HireNumberRadio)
     const obj = {
-      jobTitle, salary, salaryStart, salaryEnd, work, workPlace, contactValue, select, demand, desc, PaymentRadio, HireNumberRadio
+      jobTitle, salary, salaryStart, salaryEnd, work, workPlace, contactValue, select, demand, desc, PaymentRadio, HireNumberRadio, contact
     }
-    job.add({
-      data: obj,
-      complete: res => {
-        console.log(res)
+
+    if (checkParams(obj)) {
+      console.log('发布失败')
+      return
+    }
+    const isJump = wx.getStorageSync('isJump')
+    if (isJump) {
+      const job = wx.getStorageSync('job')
+      const { _id } = job
+      wx.showModal({
+        title: '提示',
+        content: '确认修改该职位吗？',
+        success: res => {
+          const currentTime = new Date()
+          obj.time = currentTime
+          obj.updateTime = currentTime
+          obj.state = 0
+          job.where({ _id }).update({
+            data: obj,
+            complete: res => {
+              console.log(res)
+              wx.showToast({ title: '修改成功' })
+            }
+          })
+          wx.setStorageSync('isJump', false)
+        }
+      })
+    }
+    const that = this
+    wx.showModal({
+      title: '提示',
+      content: '确认发布该职位吗？',
+      success: res => {
+        const currentTime = new Date()
+        obj.time = currentTime
+        obj.updateTime = currentTime
+        obj.state = 0
+        job.add({
+          data: obj,
+          complete: res => {
+            console.log(res)
+            wx.showToast({ title: '发布成功' })
+            // todo 发布完后刷新数据
+            that.onReset()
+          }
+        })
       }
     })
+  },
 
-
-    // wx.navigateTo({
-    //   url: '../publish-success/publish-success',
-    // })
+  onModify() {
+    const { jobTitle, salaryStart, salaryEnd, salaryShow, contact, select, demand, desc, PaymentRadio, HireNumberRadio, contactValue, work, workPlace } = this.data
+    let salary = ''
+    if (salaryShow === true) {
+      salary = '固定薪资'
+    } else {
+      salary = '范围薪资'
+    }
+    const obj = {
+      jobTitle, salary, salaryStart, salaryEnd, work, workPlace, contactValue, select, demand, desc, PaymentRadio, HireNumberRadio, contact
+    }
+    if (checkParams(obj)) {
+      console.log('发布失败')
+      return
+    }
+    const jobItem = wx.getStorageSync('job')
+    const { _id } = jobItem
+    wx.showModal({
+      title: '提示',
+      content: '确认修改该职位吗？',
+      success: res => {
+        const currentTime = new Date()
+        obj.time = currentTime
+        obj.updateTime = currentTime
+        obj.state = 0
+        job.where({ _id }).update({
+          data: obj,
+          complete: res => {
+            console.log(res)
+            wx.showToast({ title: '修改成功' })
+          }
+        })
+        wx.setStorageSync('isJump', false)
+      }
+    })
   }
-});
+})

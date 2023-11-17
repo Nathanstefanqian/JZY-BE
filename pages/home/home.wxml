@@ -1,69 +1,151 @@
 <!--pages/home/home.wxml-->
 <view class="bg">
-  <span>空格</span>
-  <view class="head">候选人</view>
-  <view class="job">
-    <span>招聘仓库管理员</span>
-    <view class="btn" bindtap="onToggle">
-      <span>切换职位</span>
-    </view>
-  </view>
-  <view class="main-container">
-    <van-tabs active="{{ active }}" bind:change="onChange" color="#fd7753">
-      <van-tab title="待录取">
-        <van-empty description="暂无候选人" wx:if="{{ isEmpty }}" />
-        <view class="tab-container">
-          <view class="text">共 2 人待录取</view>
-          <view class="box" wx:for="{{ [1,2,3]}}">
-            <view class="top">
-              <image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar"/>
-              <view class="info">
-                <view class="info-top">
-                  <span class="name">张仔豪</span>
-                  <view class="time">今天22:11投递</view>
-                </view>
-                <view class="info-bot">
-                  <span>19岁</span><span> | </span><span>学生党</span><span> | </span><span>专科</span>
-                </view>
-              </view>
-            </view>
-            <view class="bottom">
-              <view class="ibtn first">☎️</view>
-              <view class="ibtn">拒绝</view>
-              <view class="ibtn">初筛</view>
-              <view class="ibtn">录取</view>
-            </view>
-          </view>
-        </view>
-      </van-tab>
-      <van-tab title="通过初筛">内容 2</van-tab>
-      <van-tab title="已录取">内容 3</van-tab>
-      <van-tab title="已拒绝">内容 4</van-tab>
-    </van-tabs>
-  </view>
+	<view class="head">候选人</view>
+	<view class="job">
+		<span>{{ currentJob.jobTitle }}</span>
+		<view class="btn" bindtap="onToggle">
+			<span>切换职位</span>
+		</view>
+	</view>
+	<view class="main-container">
+		<van-tabs active="{{ active }}" color="#fd7753">
+			<van-tab title="待录取">
+				<van-empty description="暂无候选人" wx:if="{{ !number[0] }}" />
+				<view class="tab-container" wx:else>
+					<view class="text">共 {{ number[0] }} 人待录取</view>
+					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 0 }}">
+						<view class="top">
+							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<view class="info">
+								<view class="info-top">
+									<span class="name">{{ item.user.name}}</span>
+									<view class="time">今天22:11投递</view>
+								</view>
+								<view class="info-bot">
+									<span>{{item.user.personal.age}}岁</span>
+									<span>|</span>
+									<span>{{ item.user.personal.sex }}</span>
+									<span>|</span>
+									<span>{{ item.user.school }}</span>
+									<span>|</span>
+									<span>{{ item.user.grade }}</span>
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							<view class="ibtn first">☎️</view>
+							<view class="ibtn" bindtap="onRefuse" data-index="{{ item._id }}">拒绝</view>
+							<view class="ibtn" bindtap="onInitialScreening" data-index="{{ item._id }}">初筛</view>
+							<view class="ibtn" bindtap="onAdmitted" data-index="{{ item._id }}">录取</view>
+						</view>
+					</view>
+				</view>
+			</van-tab>
+			<van-tab title="通过初筛">
+				<van-empty description="暂无候选人" wx:if="{{ !number[1] }}" />
+				<view class="tab-container" wx:else>
+					<view class="text">共 {{ number[1] }} 人通过初筛</view>
+					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 1 }}">
+						<view class="top">
+							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<view class="info">
+								<view class="info-top">
+									<span class="name">{{ item.user.name }}</span>
+									<view class="time">今天22:11投递</view>
+								</view>
+								<view class="info-bot">
+									<span>{{item.user.personal.age}}岁</span>
+									<span>|</span>
+									<span>{{ item.user.personal.sex }}</span>
+									<span>|</span>
+									<span>{{ item.user.school }}</span>
+									<span>|</span>
+									<span>{{ item.user.grade }}</span>
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							<view class="ibtn first">☎️</view>
+							<view class="ibtn" bindtap="onRefuse" data-index="{{ item._id }}">拒绝</view>
+							<view class="ibtn" bindtap="onInitialScreening" data-index="{{ item._id }}">初筛</view>
+							<view class="ibtn" bindtap="onAdmitted" data-index="{{ item._id }}">录取</view>
+						</view>
+					</view>
+				</view>
+			</van-tab>
+			<van-tab title="已录取">
+				<van-empty description="暂无候选人" wx:if="{{ !number[2] }}" />
+				<view class="tab-container" wx:else>
+					<view class="text">共 {{ number[2] }} 人待录取</view>
+					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 2 }}">
+						<view class="top">
+							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<view class="info">
+								<view class="info-top">
+									<span class="name">{{ item.user.name}}</span>
+									<view class="time">今天22:11投递</view>
+								</view>
+								<view class="info-bot">
+									<span>{{item.user.personal.age}}岁</span>
+									<span>|</span>
+									<span>{{ item.user.personal.sex }}</span>
+									<span>|</span>
+									<span>{{ item.user.school }}</span>
+									<span>|</span>
+									<span>{{ item.user.grade }}</span>
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							<view class="ibtn first" bindtap="onPhoneCalling" data-index="{{ item }}">☎️</view>
+						</view>
+					</view>
+				</view>
+			</van-tab>
+			<van-tab title="已拒绝">
+				<van-empty description="暂无候选人" wx:if="{{ !number[3] }}" />
+				<view class="tab-container" wx:else>
+					<view class="text">共 {{ number[3] }} 人已拒绝</view>
+					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 3 }}">
+						<view class="top">
+							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<view class="info">
+								<view class="info-top">
+									<span class="name">{{ item.user.name}}</span>
+									<view class="time">今天22:11投递</view>
+								</view>
+								<view class="info-bot">
+									<span>{{item.user.personal.age}}岁</span>
+									<span>|</span>
+									<span>{{ item.user.personal.sex }}</span>
+									<span>|</span>
+									<span>{{ item.user.school }}</span>
+									<span>|</span>
+									<span>{{ item.user.grade }}</span>
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							<view class="ibtn first" bindtap="onInitialScreening" data-index="{{ item }}">☎️</view>
+						</view>
+					</view>
+				</view>
+			</van-tab>
+		</van-tabs>
+	</view>
 </view>
-
-<van-action-sheet
-  show="{{ show }}"
-  title="切换职位"
-  actions="{{ actions }}"
-  bind:close="onClose"
-  bind:select="onSelect"
->
-<view class="action-container">
-  <span>已发布 2 个职位，切换查看候选人简历</span>
-  <view class="body">
-    <view class="action-box" wx:for="{{[1,2,3]}}">
-      <view class="left">
-        <view class="left-title">招聘仓库管理员</view>
-        <view class="left-info">
-          1 待录取 | 1 通过初筛
-        </view>
-      </view>
-      <view class="right">
-        <view class="ibtn">切换</view>
-      </view>
-    </view>
-  </view>
-</view>
+<van-action-sheet show="{{ show }}" title="切换职位" bind:close="onClose" bind:select="onSelect">
+	<view class="action-container">
+		<span>已发布 {{ bJob.length }} 个职位，切换查看候选人简历</span>
+		<view class="body">
+			<view class="action-box" wx:for="{{ bJob }}" wx:key="index" wx:if="{{ item.state == 0 }}">
+				<view class="left">
+					<view class="left-title">{{ item.jobTitle }}</view>
+				</view>
+				<view class="right">
+					<view class="ibtn" bindtap="onToggleJob" data-index="{{ item }}">切换</view>
+				</view>
+			</view>
+		</view>
+	</view>
 </van-action-sheet>

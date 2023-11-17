@@ -1,6 +1,5 @@
 const { colleges, sex, grade } = require('../../data/data')
-// const user = wx.cloud.database().collection('buser')
-// const user_job = wx.cloud.database().collection('user_job')
+const user = wx.cloud.database().collection('buser')
 const uploadFile = url => {
   const name = url.substring(url.lastIndexOf('/') + 1).toLowerCase()
   return new Promise((resolve, reject) => {
@@ -71,22 +70,6 @@ Page({
       nickName: value
     })
   },
-  onGrade() {
-    this.setData({
-      title: '请选择年级',
-      show: true,
-      actions: grade,
-      index: 2
-    })
-  },
-  onSchool() {
-    this.setData({
-      title: '请选择学院',
-      show: true,
-      actions: colleges,
-      index: 1
-    })
-  },
   onSex() {
     this.setData({
       title: '请选择性别',
@@ -134,10 +117,21 @@ Page({
   },
   async onSubmit() {
     const { nickName, name, sex, phone, verifyType, avatarUrl} = this.data
-    user.
-    wx.showToast({
-      icon: 'success',
-      title: '注册成功'
+    console.log(nickName, name, sex, phone, verifyType, avatarUrl)
+
+    // 检查非空
+    // 上传文件
+    const url = await uploadFile(avatarUrl)
+    const obj = {
+      nickName, name, sex, phone, verifyType, url
+    }   
+    const res = await user.add({
+      data: obj
     })
+    console.log(res)
+    // wx.showToast({
+    //   icon: 'success',
+    //   title: '注册成功'
+    // })
   }
 })

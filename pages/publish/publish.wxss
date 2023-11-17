@@ -8,6 +8,9 @@
 }
 
 .pag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-left: auto;
   color: grey;
   font-size: 32rpx;
@@ -105,4 +108,8 @@
 
 .highlight {
   color: red;
+}
+
+.modify {
+  display: flex;
 }
