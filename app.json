@@ -3,12 +3,12 @@
     "pages/home/home",
     "pages/job/job",
     "pages/my/my",
-    "pages/candidate/candidate",
     "pages/publish/publish",
     "pages/publish-success/publish-success",
     "pages/edit/edit",
     "pages/verify/verify",
-    "pages/proxy/proxy"
+    "pages/proxy/proxy",
+    "pages/refuse/refuse"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -79,6 +79,7 @@
     "van-popup": "./dist/popup/index",
     "van-calendar": "./dist/calendar/index",
     "van-field": "./dist/field/index",
-    "van-tag": "./dist/tag/index"
+    "van-tag": "./dist/tag/index",
+    "van-uploader": "./dist/uploader/index"
   }
 }

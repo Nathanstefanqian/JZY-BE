@@ -8,3 +8,8 @@
   border: solid 1rpx #000;
   margin-bottom: 40rpx;
 }
+
+.card view {
+  display: flex;
+  flex-direction: column;
+}

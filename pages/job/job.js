@@ -1,43 +1,41 @@
 const job = wx.cloud.database().collection('job')
 const user_job = wx.cloud.database().collection('user_job')
 const formatTime = (timeString) => {
-  const date = new Date(timeString);
+  const date = new Date(timeString)
   const formattedTime = date.toISOString()
     .replace('T', ' ') // 将 'T' 替换为空格
-    .replace(/\.\d+Z$/, ''); // 将小数点及 'Z' 删除
-  return formattedTime;
-};
+    .replace(/\.\d+Z$/, '') // 将小数点及 'Z' 删除
+  return formattedTime
+}
 
 Page({
   data: {
-    option1: [
-      { text: '全部', value: 0 },
-      { text: '招聘中', value: 1 },
-      { text: '待发布', value: 2 },
-      { text: '已下线', value: 3 },
-      { text: '审核驳回', value: 4 }
-    ],
-    option2: [
-      { text: '默认排序', value: 'a' },
-      { text: '好评排序', value: 'b' },
-      { text: '销量排序', value: 'c' }
-    ],
-    value1: 0,
-    value2: 'a',
     jobList: [],
     user_JobList: [],
     show: false,
     currentIndex: '',
     currentState: '',
     stateName: ['进行中', '已暂停', '已关闭'],
+    stateCount: [0, 0, 0],
     stopTitle: ''
   },
+  onShow() {
+  },
   async onLoad(e) {
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    setTimeout(() => {
+      wx.hideLoading()
+    }, 1000)
     const openid = wx.getStorageSync('openid')
     const res = await job.where({ _openid: openid }).get()
+    let stateCount = [0, 0, 0]
     const jobList = res.data.map(item => {
       item.time = formatTime(item.time) // 将时间对象转换为 ISO 格式的字符串
       item.updateTime = formatTime(item.updateTime) // 将时间对象转换为 ISO 格式的字符串
+      stateCount[parseInt(item.state)] += 1
       return item
     })
     const user_jobList = await Promise.all(jobList.map(async item => {
@@ -46,7 +44,10 @@ Page({
       return result.data
     }))
 
-    this.setData({ user_jobList, jobList })
+    console.log('职位列表', jobList)
+    console.log('状态列表', stateCount)
+
+    this.setData({ user_jobList, jobList, stateCount })
   },
   onPop(e) {
     const { index, state } = e.currentTarget.dataset

@@ -2,36 +2,91 @@
 <view class="bg">
 	<view class="head">我的职位</view>
 	<view class="main-container">
-		<view class="body">
-			<view class="box" wx:for="{{ jobList }}" wx:key="index">
-				<view class="flex">
-					<view class="title">{{ item.jobTitle }}</view>
-					<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
-				</view>
-				<view class="state">
-					<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
-					<view class="flex column">
-						<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
-						<span>刷新于{{ item.updateTime }}</span>
+		<van-tabs active="{{ active }}" bind:change="onChange">
+			<van-tab title="正在进行">
+				<view class="box" wx:for="{{ jobList }}" wx:if="{{ item.state == 0 }}" wx:key="index">
+					<view class="flex">
+						<view class="title">{{ item.jobTitle }}</view>
+						<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
+					</view>
+					<view class="state">
+						<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+						<view class="flex column">
+							<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
+							<span>刷新于{{ item.updateTime }}</span>
+						</view>
+					</view>
+					<view class="user">
+						<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
+						<span style="margin-right: 20px">已报名</span>
+						<span>{{ user_jobList[index].length }}</span>
+					</view>
+					<view class="btn">
+						<view wx:if="{{ item.state != 2 }}" class="flex">
+							<view class="ibtn" bindtap="onPop" data-index="{{ item._id }}" data-state="{{ item.state }}">职位操作</view>
+							<view class="ibtn orange" bindtap="onRefresh" data-index="{{ item._id }}" style="margin-left:auto;">职位刷新</view>
+						</view>
+						<view wx:else class="flex">
+							<view class="ibtn" data-index="{{ item._id }}" data-state="{{ item.state }}">禁用</view>
+							<view class="ibtn orange" style="margin-left:auto;">职位刷新</view>
+						</view>
 					</view>
 				</view>
-				<view class="user">
-					<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
-					<span style="margin-right: 20px">已报名</span>
-					<span>{{ user_jobList[index].length }}</span>
-				</view>
-				<view class="btn">
-					<view wx:if="{{ item.state != 2 }}" class="flex">
-						<view class="ibtn" bindtap="onPop" data-index="{{ item._id }}" data-state="{{ item.state }}">职位操作</view>
-						<view class="ibtn orange" bindtap="onRefresh" data-index="{{ item._id }}" style="margin-left:auto;">职位刷新</view>
+				<van-empty description="暂无正在进行" wx:if="{{ !stateCount[0] }}" />
+			</van-tab>
+			<van-tab title="已暂停">
+				<view class="box" wx:for="{{ jobList }}" wx:if="{{ item.state == 1 }}" wx:key="index">
+					<view class="flex">
+						<view class="title">{{ item.jobTitle }}</view>
+						<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
 					</view>
-					<view wx:else class="flex">
-						<view class="ibtn" data-index="{{ item._id }}" data-state="{{ item.state }}">禁用</view>
-						<view class="ibtn orange" style="margin-left:auto;">职位刷新</view>
+					<view class="state">
+						<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+						<view class="flex column">
+							<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
+							<span>刷新于{{ item.updateTime }}</span>
+						</view>
+					</view>
+					<view class="user">
+						<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
+						<span style="margin-right: 20px">已报名</span>
+						<span>{{ user_jobList[index].length }}</span>
+					</view>
+					<view class="btn">
+						<view wx:if="{{ item.state != 2 }}" class="flex">
+							<view class="ibtn" bindtap="onPop" data-index="{{ item._id }}" data-state="{{ item.state }}">职位操作</view>
+							<view class="ibtn orange" bindtap="onRefresh" data-index="{{ item._id }}" style="margin-left:auto;">职位刷新</view>
+						</view>
+						<view wx:else class="flex">
+							<view class="ibtn" data-index="{{ item._id }}" data-state="{{ item.state }}">禁用</view>
+							<view class="ibtn orange" style="margin-left:auto;">职位刷新</view>
+						</view>
 					</view>
 				</view>
-			</view>
-		</view>
+				<van-empty description="暂无已暂停" wx:if="{{ !stateCount[1] }}" />
+			</van-tab>
+			<van-tab title="已关闭">
+				<view class="box" wx:for="{{ jobList }}" wx:if="{{ item.state == 2 }}" wx:key="index">
+					<view class="flex">
+						<view class="title">{{ item.jobTitle }}</view>
+						<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
+					</view>
+					<view class="state">
+						<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+						<view class="flex column">
+							<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
+							<span>刷新于{{ item.updateTime }}</span>
+						</view>
+					</view>
+					<view class="user">
+						<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
+						<span style="margin-right: 20px">已报名</span>
+						<span>{{ user_jobList[index].length }}</span>
+					</view>
+				</view>
+				<van-empty description="暂无已关闭" wx:if="{{ !stateCount[2] }}" />
+			</van-tab>
+		</van-tabs>
 	</view>
 </view>
 <van-action-sheet show="{{ show }}" bind:close="onClose" custom-class="pop" title="职位操作">

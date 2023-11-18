@@ -1,4 +1,4 @@
-// pages/candidate/candidate.js
+// pages/refuse/refuse.js
 Page({
 
   /**

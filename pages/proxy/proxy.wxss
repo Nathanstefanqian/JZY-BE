@@ -7,8 +7,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: serif;
+}
+
+.main h1 {
+  font-size: 38rpx;
+  font-weight: 700;
+  margin-bottom: 20rpx;
+}
+
+.main h2 {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 28rpx;
 }
 
 .main view {
   text-indent: 2em; /* 首行缩进两个字符位置 */
+  margin-top: 22rpx;
+  line-height: 45rpx;
+}
+
+.main h3 {
+  margin: 35rpx auto 2rpx 0;
+  font-size: 33rpx;
+  font-weight: 700;
 }

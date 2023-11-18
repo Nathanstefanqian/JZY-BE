@@ -13,8 +13,10 @@ Page({
     isEmpty: false,
     number: ['', '', '', ''],
     show: false,
+    contactShow: false,
     bJob: [],
-    currentJob: []
+    currentJob: [],
+    phone: ''
   },
 
   async onLoad(options) {
@@ -33,14 +35,21 @@ Page({
       item.user = res.data[0]
       return item
     }))
+    console.log(user_jobList)
     number = number.map((item, index) => {
       return user_jobList.filter(item => item.state == index).length
     })
-    console.log(number)
     this.setData({ user_jobList, currentJob, number })
   },
   onShow() {
     this.onLoad()
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    setTimeout(() => {
+      wx.hideLoading()
+    }, 1000)
   },
   onToggle() {
     this.setData({
@@ -49,17 +58,20 @@ Page({
   },
   onClose() {
     this.setData({
-      show: false
+      show: false,
+      contactShow: false
     })
   },
   async onAdmitted(e) {
     console.log(e)
     const { _id } = e.currentTarget.dataset.index
-    const res = await user_job.where({ _id }).update({
+    await user_job.where({ _id }).update({
       data: {
         state: 2
       }
     })
+    wx.showToast({ title: '录取成功' })
+    this.onLoad()
   },
   async onInitialScreening(e) {
     console.log(e)
@@ -69,6 +81,8 @@ Page({
         state: 1
       }
     })
+    wx.showToast({ title: '通过初筛成功' })
+    this.onLoad()
   },
   async onRefuse(e) {
     console.log(e)
@@ -79,6 +93,7 @@ Page({
         state: 3
       }
     })
+    wx.showToast({ title: '拒绝成功' })
     // 重新读取数据库
     this.onLoad()
   },
@@ -97,8 +112,24 @@ Page({
       return user_jobList.filter(item => item.state == index).length
     })
     this.setData({ user_jobList, currentJob, show: false, number })
+    wx.showToast({ title: '切换成功' })
   },
   async onPhoneCalling(e) {
     console.log(e)
+    const { phone } = e.currentTarget.dataset.index.user
+    this.setData({ contactShow: true, phone })
+  },
+  onClipboard(e) {
+    const { phone } = this.data
+    wx.setClipboardData({
+      data: phone,
+      success: function (res) {
+        wx.showToast({
+          title: '电话已复制',
+          icon: 'success',
+          duration: 2000
+        })
+      }
+    })
   }
 })
