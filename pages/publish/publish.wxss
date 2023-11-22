@@ -18,13 +18,14 @@
 
 .body {
   width: 100%;
+  padding: 20rpx 0;
 }
 
 .box {
   margin-bottom: 48rpx;
 }
 
-.box span:first-child {
+.box > span:first-child {
   color: red;
 }
 
@@ -36,10 +37,30 @@
   margin-left: 20rpx;
 }
 
-.box input {
+.box > input {
   box-sizing: border-box;
   padding: 10rpx 25rpx;
   height: 92rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.input {
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  height: 92rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.box .textarea {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  height: 150rpx;
   border-radius: 24rpx;
   margin-top: 24rpx;
   background-color: #f6f8f9;

@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {},
+  "navigationStyle": "default",
+  "navigationBarTitleText": "实名认证"
 }

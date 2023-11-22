@@ -13,13 +13,18 @@
 				<van-empty description="暂无候选人" wx:if="{{ !number[0] }}" />
 				<view class="tab-container" wx:else>
 					<view class="text">共 {{ number[0] }} 人待录取</view>
-					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 0 }}">
+					<view
+						class="box"
+						wx:for="{{ user_jobList }}"
+						wx:key="index"
+						wx:if="{{ item.state == 0 }}"
+					>
 						<view class="top">
-							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<image src="{{ item.user.avatarUrl }}" mode="aspectFill" class="avatar" bindtap="onDetail" data-index="{{ item._openid }}" />
 							<view class="info">
 								<view class="info-top">
 									<span class="name">{{ item.user.name}}</span>
-									<view class="time">今天22:11投递</view>
+									<view class="time">{{ item.time }} 投递</view>
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
@@ -33,7 +38,7 @@
 							</view>
 						</view>
 						<view class="bottom">
-							<view class="ibtn first" bindtap="onPhoneCalling">☎️</view>
+							<view class="ibtn first" bindtap="onPhoneCalling" data-index="{{ item }}">☎️</view>
 							<view class="ibtn" bindtap="onRefuse" data-index="{{ item._id }}">拒绝</view>
 							<view class="ibtn" bindtap="onInitialScreening" data-index="{{ item._id }}">初筛</view>
 							<view class="ibtn" bindtap="onAdmitted" data-index="{{ item._id }}">录取</view>
@@ -47,11 +52,11 @@
 					<view class="text">共 {{ number[1] }} 人通过初筛</view>
 					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 1 }}">
 						<view class="top">
-							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<image src="{{ item.user.avatarUrl }}" mode="aspectFill" class="avatar" bindtap="onDetail" data-index="{{ item._openid }}" />
 							<view class="info">
 								<view class="info-top">
 									<span class="name">{{ item.user.name }}</span>
-									<view class="time">今天22:11投递</view>
+									<view class="time">{{ item.time }} 投递</view>
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
@@ -65,9 +70,8 @@
 							</view>
 						</view>
 						<view class="bottom">
-							<view class="ibtn first" bindtap="onPhoneCalling">☎️</view>
+							<view class="ibtn first" bindtap="onPhoneCalling" data-index="{{ item }}">☎️</view>
 							<view class="ibtn" bindtap="onRefuse" data-index="{{ item._id }}">拒绝</view>
-							<view class="ibtn" bindtap="onInitialScreening" data-index="{{ item._id }}">初筛</view>
 							<view class="ibtn" bindtap="onAdmitted" data-index="{{ item._id }}">录取</view>
 						</view>
 					</view>
@@ -79,11 +83,11 @@
 					<view class="text">共 {{ number[2] }} 人已录取</view>
 					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 2 }}">
 						<view class="top">
-							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<image src="{{ item.user.avatarUrl }}" mode="aspectFill" class="avatar" bindtap="onDetail" data-index="{{ item._openid }}" />
 							<view class="info">
 								<view class="info-top">
 									<span class="name">{{ item.user.name}}</span>
-									<view class="time">今天22:11投递</view>
+									<view class="time">{{ item.time }} 投递</view>
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
@@ -108,11 +112,11 @@
 					<view class="text">共 {{ number[3] }} 人已拒绝</view>
 					<view class="box" wx:for="{{ user_jobList }}" wx:key="index" wx:if="{{ item.state == 3 }}">
 						<view class="top">
-							<image src="../../assets/avatar.jpg" mode="aspectFit" class="avatar" />
+							<image src="{{ item.user.avatarUrl }}" mode="aspectFill" class="avatar" bindtap="onDetail" data-index="{{ item._openid }}" />
 							<view class="info">
 								<view class="info-top">
 									<span class="name">{{ item.user.name}}</span>
-									<view class="time">今天22:11投递</view>
+									<view class="time">{{ item.time }} 投递</view>
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>

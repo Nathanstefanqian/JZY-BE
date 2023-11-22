@@ -5,9 +5,13 @@
 2 已录取 已结束
 3 已拒绝
 */
-const job = wx.cloud.database().collection('job')
-const user = wx.cloud.database().collection('user')
-const user_job = wx.cloud.database().collection('user_job')
+const formatTime = (timeString) => {
+  const date = new Date(timeString)
+  const formattedTime = date.toISOString()
+    .replace('T', ' ') // 将 'T' 替换为空格
+    .replace(/\.\d+Z$/, '') // 将小数点及 'Z' 删除
+  return formattedTime
+}
 Page({
   data: {
     isEmpty: false,
@@ -15,41 +19,67 @@ Page({
     show: false,
     contactShow: false,
     bJob: [],
-    currentJob: [],
-    phone: ''
+    currentJob: {},
+    phone: '',
+    c1: Object,
+    job: Object,
+    user: Object,
+    user_job: Object
   },
 
   async onLoad(options) {
-    // 获取当前商家所有的岗位
-    let { number } = this.data
-    const openid = wx.getStorageSync('openid')
-    const res = await job.where({ _openid: openid }).orderBy('time', 'desc').get()
-    const bJob = res.data // 将所有的跟该商家有关的职位全部缓存到data
-    this.setData({ bJob })
-    // user_job表中查找最近发布的一个职位,并加载与该岗位相关的信息
-    const jobId = bJob[0]._id
-    const currentJob = bJob[0]
-    let user_jobList = await user_job.where({ jobId }).get()
-    user_jobList = await Promise.all(user_jobList.data.map(async item => {
-      const res = await user.where({ _openid: item._openid }).get()
-      item.user = res.data[0]
-      return item
-    }))
-    console.log(user_jobList)
-    number = number.map((item, index) => {
-      return user_jobList.filter(item => item.state == index).length
+    let c1 = new wx.cloud.Cloud({
+      resourceAppid: 'wxcd21eb64b26e4b50',
+      resourceEnv: 'jzy-1gjdmixbb2d05e5f',
     })
-    this.setData({ user_jobList, currentJob, number })
-  },
-  onShow() {
-    this.onLoad()
+    await c1.init()
+    const job = c1.database().collection('job')
+    const user = c1.database().collection('buser')    
+    const user_job = c1.database().collection('user_job')
+    this.setData({ c1, job, user, user_job })
     wx.showLoading({
       title: '加载中',
       mask: true
     })
-    setTimeout(() => {
+    if (wx.getStorageSync('openid')) {
+      // 获取当前商家所有的岗位
+      let { number } = this.data
+      const openid = wx.getStorageSync('openid')
+      const res = await job.where({ _openid: openid }).orderBy('time', 'desc').get()
+      const bJob = []
+      res.data.map(item => {
+        if (item.state == 0) bJob.push(item)
+      }) // 将所有的跟该商家有关的职位全部缓存到data
+      // user_job表中查找最近发布的一个职位,并加载与该岗位相关的信息
+      if (!bJob.length) {
+        wx.hideLoading()
+        let { currentJob } = this.data
+        currentJob.jobTitle = '当前未发布职位'
+        this.setData({
+          currentJob
+        })
+        return
+      }
+      const jobId = bJob[0]._id
+      const currentJob = bJob[0]
+      let user_jobList = await user_job.where({ jobId }).get()
+      user_jobList = await Promise.all(user_jobList.data.map(async item => {
+        const res = await user.where({ _openid: item._openid }).get()
+        item.user = res.data[0]
+        item.time = formatTime(item.time)
+        return item
+      }))
+      number = number.map((item, index) => {
+        return user_jobList.filter(item => item.state == index).length
+      })
+      this.setData({ user_jobList, currentJob, number, bJob }, () => wx.hideLoading())
+    } else {
       wx.hideLoading()
-    }, 1000)
+      wx.showToast({ title: '请先登录', icon: 'error' })
+    }
+  },
+  onShow() {
+    this.onLoad()
   },
   onToggle() {
     this.setData({
@@ -63,7 +93,7 @@ Page({
     })
   },
   async onAdmitted(e) {
-    console.log(e)
+    const { user_job } = this.data
     const { _id } = e.currentTarget.dataset.index
     await user_job.where({ _id }).update({
       data: {
@@ -71,21 +101,22 @@ Page({
       }
     })
     wx.showToast({ title: '录取成功' })
-    this.onLoad()
+    setTimeout(() => this.onLoad(), 2000)
+
   },
   async onInitialScreening(e) {
-    console.log(e)
+    const { user_job } = this.data
     const { _id } = e.currentTarget.dataset.index
-    const res = await user_job.where({ _id }).update({
+    await user_job.where({ _id }).update({
       data: {
         state: 1
       }
     })
     wx.showToast({ title: '通过初筛成功' })
-    this.onLoad()
+    setTimeout(() => this.onLoad(), 2000)
   },
   async onRefuse(e) {
-    console.log(e)
+    const { user_job } = this.data
     const _id = e.currentTarget.dataset.index
     // 同步到数据库
     await user_job.where({ _id }).update({
@@ -95,9 +126,11 @@ Page({
     })
     wx.showToast({ title: '拒绝成功' })
     // 重新读取数据库
-    this.onLoad()
+    setTimeout(() => this.onLoad(), 2000)
+
   },
   async onToggleJob(e) {
+    const { user_job, user } = this.data
     const { index } = e.currentTarget.dataset
     const jobId = index._id
     const currentJob = index
@@ -114,7 +147,7 @@ Page({
     this.setData({ user_jobList, currentJob, show: false, number })
     wx.showToast({ title: '切换成功' })
   },
-  async onPhoneCalling(e) {
+  onPhoneCalling(e) {
     console.log(e)
     const { phone } = e.currentTarget.dataset.index.user
     this.setData({ contactShow: true, phone })
@@ -130,6 +163,12 @@ Page({
           duration: 2000
         })
       }
+    })
+  },
+  onDetail(e) {
+    const { index } = e.currentTarget.dataset
+    wx.navigateTo({
+      url: `../resume/resume?id=${index}`
     })
   }
 })

@@ -10,7 +10,6 @@
     <view class="box">
       <view class="getUser">
         <span>微信名</span>
-        <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">获取用户微信名和头像</button>
       </view>
       <input type="text" placeholder="请输入微信名" bindinput="onNickName" value="{{ nickName }}" />
     </view>
@@ -26,14 +25,8 @@
       <span>手机号</span>
       <input type="text" placeholder="请输入手机号" bindinput="onPhone" value="{{ phone }}" />
     </view>
-    <view class="box">
-      <span>类型</span>
-      <van-radio-group value="{{ verifyType }}" bind:change="onChange" direction="horizontal">
-        <van-radio name="个人" label-disabled>个人</van-radio>
-        <van-radio name="企业" label-disabled>企业</van-radio>
-      </van-radio-group>
-    </view>
   </view>
-  <button class="submit" bindtap="onSubmit">提交审核</button>
+  <button class="submit" bindtap="onSubmit" type="primary" wx:if="{{ !exist }}">提交审核</button>
+  <button class="submit" bindtap="onModify" type="primary" wx:else>修改审核</button>
 </view>
 <van-action-sheet title="{{ title }}" custom-class="action" show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" />

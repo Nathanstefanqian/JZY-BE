@@ -10,14 +10,14 @@
 						<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
 					</view>
 					<view class="state">
-						<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+						<image src="{{ imageUrl }}/assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
 						<view class="flex column">
 							<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
 							<span>刷新于{{ item.updateTime }}</span>
 						</view>
 					</view>
 					<view class="user">
-						<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
+						<image src="{{ imageUrl }}/assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
 						<span style="margin-right: 20px">已报名</span>
 						<span>{{ user_jobList[index].length }}</span>
 					</view>
@@ -41,14 +41,14 @@
 						<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
 					</view>
 					<view class="state">
-						<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+						<image src="{{ imageUrl }}/assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
 						<view class="flex column">
 							<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
 							<span>刷新于{{ item.updateTime }}</span>
 						</view>
 					</view>
 					<view class="user">
-						<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
+						<image src="{{ imageUrl }}/assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
 						<span style="margin-right: 20px">已报名</span>
 						<span>{{ user_jobList[index].length }}</span>
 					</view>
@@ -72,14 +72,14 @@
 						<van-tag type="primary" style="margin-left: auto">{{ stateName[item.state] }}</van-tag>
 					</view>
 					<view class="state">
-						<image src="../../assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+						<image src="{{ imageUrl }}/assets/clock.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
 						<view class="flex column">
 							<span style="margin-bottom: 20rpx">发布于{{ item.time }}</span>
 							<span>刷新于{{ item.updateTime }}</span>
 						</view>
 					</view>
 					<view class="user">
-						<image src="../../assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
+						<image src="{{ imageUrl }}/assets/signal.svg" mode="aspectFit" style="width: 38rpx; height: 38rpx;" />
 						<span style="margin-right: 20px">已报名</span>
 						<span>{{ user_jobList[index].length }}</span>
 					</view>
@@ -92,15 +92,15 @@
 <van-action-sheet show="{{ show }}" bind:close="onClose" custom-class="pop" title="职位操作">
 	<view class="pop-container">
 		<view bindtap="onStop" data-index="e">
-			<image src="../../assets/pause.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+			<image src="{{ imageUrl }}/assets/pause.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
 			{{ stopTitle }}
 		</view>
 		<view bindtap="onModify">
-			<image src="../../assets/modify.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+			<image src="{{ imageUrl }}/assets/modify.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
 			修改职位
 		</view>
 		<view bindtap="onCloseJob">
-			<image src="../../assets/close.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
+			<image src="{{ imageUrl }}/assets/close.svg" mode="aspectFit" style="width: 48rpx; height: 48rpx;" />
 			关闭职位
 		</view>
 	</view>

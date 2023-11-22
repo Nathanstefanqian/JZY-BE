@@ -21,21 +21,12 @@ const Contact = [
     name: '手机号'
   },
   {
-    name: '固定电话'
-  },
-  {
     name: '微信号'
   },
   {
     name: 'QQ号'
-  },
-  {
-    name: '微信公众号'
   }
 ]
-
-
-
 
 const colleges = [
   {
@@ -145,7 +136,6 @@ const isNull = {
   salaryEnd: "薪资不能为空",
   contactValue: "联系方式不能为空",
   HireNumberRadio: '请选择招聘人数',
-  PaymentRadio: '请选择结算方式',
   work: '',
   desc: '职位描述不能为空',
   demand: '人员需求不能为空',

@@ -4,12 +4,80 @@
   box-sizing: border-box;
   width: 100%;
   padding: 20rpx 40rpx;
-  border-radius: 40rpx;
-  border: solid 1rpx #000;
-  margin-bottom: 40rpx;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.upload-area button {
+  margin: 40rpx 0;
+}
+
+.upload-area image {
+  width: 700rpx;
+  border-radius: 20rpx;
+  
+}
+
+button {
+  width: 200px;
+  height: 40px;
+  background-color: #007AFF;
+  color: #fff;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.submit-btn {
+  width: 200px;
+  height: 40px;
+  background-color: #FF3B30;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.card {
+  padding: 20rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  box-shadow: 0 2rpx 4rpx 0 rgba(0, 0, 0, 0.1);
 }
 
 .card view {
+  margin-bottom: 20rpx;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.card span {
+  width: 200rpx;
+  color: #333;
+  font-size: 28rpx;
+}
+
+.card input {
+  flex: 1;
+  height: 60rpx;
+  border: solid 1rpx #ccc;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+}
+
+.card input::placeholder {
+  color: #999;
 }

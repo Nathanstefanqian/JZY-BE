@@ -4,11 +4,11 @@
     "pages/job/job",
     "pages/my/my",
     "pages/publish/publish",
-    "pages/publish-success/publish-success",
     "pages/edit/edit",
     "pages/verify/verify",
     "pages/proxy/proxy",
-    "pages/refuse/refuse"
+    "pages/resume/resume",
+    "pages/test/test"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -54,8 +54,7 @@
   "permission": {
     "scope.userLocation": {
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
-    },
-    "scope.userInfo": "true"
+    }
   },
   "requiredPrivateInfos": [
     "chooseAddress",
@@ -80,6 +79,10 @@
     "van-calendar": "./dist/calendar/index",
     "van-field": "./dist/field/index",
     "van-tag": "./dist/tag/index",
-    "van-uploader": "./dist/uploader/index"
+    "van-uploader": "./dist/uploader/index",
+    "van-collapse": "./dist/collapse/index",
+    "van-collapse-item": "./dist/collapse-item/index",
+    "van-circle": "./dist/circle/index",
+    "van-stepper": "./dist/stepper/index"
   }
 }

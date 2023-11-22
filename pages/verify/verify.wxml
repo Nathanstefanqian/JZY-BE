@@ -1,39 +1,55 @@
 <!--pages/verify/verify.wxml-->
-<back></back>
-<view class="container">
-	<span>您即将进行{{ !company ? '企业' : '个人'}}实名认证</span>
-	<span bindtap="onToggleCompany">个人</span>
-  <view class="card" wx:if="{{ company }}">
-    <view>
-      <span>身份证</span>
-      <input placeholder="请输入身份证号" value="{{}}" bindinput="onIdInput" />
+<van-tabs active="{{ active }}" bind:change="onToggle" animated>
+	<van-tab title="我是个人" disabled="{{ isCompanyVerify }}">
+		<view class="container">
+      <view class="card">
+        <view>
+          <span>身份证号码</span>
+          <input placeholder="请输入身份证号码" value="{{ IdCard }}" bindinput="onIdInput" />
+			  </view>
+        <view>
+          <span>真实姓名</span>
+          <input placeholder="请输入真实姓名" value="{{ name }}" bindinput="onNameInput" />
+			  </view>
+      </view>
+			<view class="upload-area">
+				<image src="{{ frontImage }}" mode="aspectFill"></image>
+				<button bindtap="chooseFrontImage">选择正面照片</button>
+			</view>
+			<view class="upload-area">
+				<image src="{{ backImage }}" mode="aspectFill"></image>
+				<button bindtap="chooseBackImage">选择反面照片</button>
+			</view>
+      <button bindtap="onSubmitPersonal" style="margin-top: 50rpx;" wx:if="{{ !isPersonalVerify }}">上传认证</button>
+      <button bindtap="onUpdatePersonal" style="margin-top: 50rpx;" wx:else>更新认证</button>
+      <button bindtap="onDelete" type="warn"wx:if="{{ isPersonalVerify }}">删除认证</button>
+		</view>
+	</van-tab>
+	<van-tab title="我是企业" disabled="{{ isPersonalVerify }}">
+		<view class="card">
+			<view>
+				<span>营业商户名称</span>
+				<input placeholder="请输入商户名称" value="{{ companyInfo.name }}" bindinput="onCompanyNameInput" />
+			</view>
+			<view>
+				<span>营业商户地址</span>
+				<input placeholder="请选择地址" value="{{ companyInfo.location }}" bindinput="onCompanyLocationInput" />
+			</view>
+			<view>
+				<span>营业执照编号</span>
+				<input placeholder="请输入营业执照编号" value="{{ companyInfo.id }}" bindinput="onCompanyIdInput" />
+			</view>
+			<view>
+				<span>负责人职位</span>
+				<input placeholder="点击选择负责人职位" value="{{ companyInfo.job }}" bindinput="onCompanyJobInput" />
+			</view>
+		</view>
+    <view class="upload-area" style="margin-top: 40rpx">
+      <image src="{{ companyImage }}" mode="aspectFill"></image>
+      <button bindtap="chooseCompanyImage">上传营业执照照片</button>
     </view>
-    <view>
-      <span>身份证照片上传</span>
-      <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" />
-    </view>
-  </view>
-  <view class="card" wx:else>
-    <view>
-      <span>营业商户名称</span>
-      <input placeholder="请输入商户名称" value="{{}}" bindinput="onIdInput" />
-    </view>
-    <view>
-      <span>营业商户地址</span>
-      <input placeholder="请选择地址" value="{{}}" bindinput="onIdInput" />
-    </view>
-    <view>
-      <span>营业执照编号</span>
-      <input placeholder="请输入营业执照编号" value="{{}}" bindinput="onIdInput" />
-    </view>
-    <view>
-      <span>上传营业执照</span>
-      <input placeholder="点击上传营业执照" value="{{}}" bindinput="onIdInput" />
-    </view>
-    <view>
-      <span>负责人职位</span>
-      <input placeholder="点击选择负责人职位" value="{{}}" bindinput="onIdInput" />
-    </view>
-  </view>
-<span>确认</span>
-</view>
+    <button bindtap="onSubmitCompany" style="margin-top: 50rpx;" wx:if="{{ !isCompanyVerify }}">上传认证</button>
+      <button bindtap="onUpdateCompany" style="margin-top: 50rpx;" wx:else>更新认证</button>
+      <button bindtap="onDelete" type="warn"wx:if="{{ isCompanyVerify }}">删除认证</button>
+	</van-tab>
+</van-tabs>
