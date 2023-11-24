@@ -90,11 +90,14 @@ Page({
       sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图
       sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机
       success: async res => {
+        wx.showLoading({
+          title: '上传中'
+        })
         var tempFilePath = res.tempFilePaths[0] // 选择的图片临时文件路径
         // 处理上传逻辑，可以通过wx.uploadFile等方法上传图片
         const result = await uploadFile(tempFilePath)
         that.setData({ frontImage: result })
-        wx.showToast({ title: '上传成功' })
+        wx.showToast({ title: '上传成功' }, () =>  wx.hideLoading())
       }
     })
   },
@@ -105,11 +108,14 @@ Page({
       sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图
       sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机
       success: async res => {
+        wx.showLoading({
+          title: '上传中'
+        })
         var tempFilePath = res.tempFilePaths[0] // 选择的图片临时文件路径
         // 处理上传逻辑，可以通过wx.uploadFile等方法上传图片
         const result = await uploadFile(tempFilePath)
         that.setData({ backImage: result })
-        wx.showToast({ title: '上传成功' })
+        wx.showToast({ title: '上传成功' }, () => wx.hideLoading())
       }
     })
   },
@@ -120,6 +126,9 @@ Page({
       sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图
       sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机
       success: async res => {
+        wx.showLoading({
+          title: '上传中'
+        })
         var tempFilePath = res.tempFilePaths[0] // 选择的图片临时文件路径
         // 处理上传逻辑，可以通过wx.uploadFile等方法上传图片
         const result = await uploadFile(tempFilePath)
@@ -195,6 +204,7 @@ Page({
     setTimeout(() => that.onLoad(), 2000)
   },
   async onDelete() {
+    const { verify } = this.data
     const openid = wx.getStorageSync('openid')
     await verify.where({ _openid: openid }).remove()
     wx.showToast({ title: '撤回认证成功' })

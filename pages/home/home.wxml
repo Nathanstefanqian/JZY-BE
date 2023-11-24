@@ -28,7 +28,7 @@
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
-									<span>|</span>
+									<span></span>
 									<span>{{ item.user.personal.sex }}</span>
 									<span>|</span>
 									<span>{{ item.user.school }}</span>
@@ -60,7 +60,7 @@
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
-									<span>|</span>
+									<span></span>
 									<span>{{ item.user.personal.sex }}</span>
 									<span>|</span>
 									<span>{{ item.user.school }}</span>
@@ -91,7 +91,7 @@
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
-									<span>|</span>
+									<span></span>
 									<span>{{ item.user.personal.sex }}</span>
 									<span>|</span>
 									<span>{{ item.user.school }}</span>
@@ -120,7 +120,7 @@
 								</view>
 								<view class="info-bot">
 									<span>{{item.user.personal.age}}岁</span>
-									<span>|</span>
+									<span></span>
 									<span>{{ item.user.personal.sex }}</span>
 									<span>|</span>
 									<span>{{ item.user.school }}</span>

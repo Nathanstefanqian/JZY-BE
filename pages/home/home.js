@@ -5,6 +5,7 @@
 2 已录取 已结束
 3 已拒绝
 */
+const { reg } = require('../../config/index')
 const formatTime = (timeString) => {
   const date = new Date(timeString)
   const formattedTime = date.toISOString()
@@ -20,6 +21,7 @@ Page({
     contactShow: false,
     bJob: [],
     currentJob: {},
+    currentJobId: '',
     phone: '',
     c1: Object,
     job: Object,
@@ -35,6 +37,7 @@ Page({
     await c1.init()
     const job = c1.database().collection('job')
     const user = c1.database().collection('buser')    
+    const fuser = c1.database().collection('user')    
     const user_job = c1.database().collection('user_job')
     this.setData({ c1, job, user, user_job })
     wx.showLoading({
@@ -49,8 +52,8 @@ Page({
       const bJob = []
       res.data.map(item => {
         if (item.state == 0) bJob.push(item)
-      }) // 将所有的跟该商家有关的职位全部缓存到data
-      // user_job表中查找最近发布的一个职位,并加载与该岗位相关的信息
+      }) // 将所有的跟该商家有关的职位全部缓存到bJob
+      
       if (!bJob.length) {
         wx.hideLoading()
         let { currentJob } = this.data
@@ -59,12 +62,17 @@ Page({
           currentJob
         })
         return
+      } 
+      let { currentJob } = this.data
+      if(Object.keys(currentJob).length === 0) { // 如果是第一次初始化
+        currentJob = bJob[0]
       }
-      const jobId = bJob[0]._id
-      const currentJob = bJob[0]
-      let user_jobList = await user_job.where({ jobId }).get()
+      const jobId = currentJob._id
+      // user_job表中查找最近发布的一个职位,并加载与该岗位相关的信息
+      let user_jobList = await user_job.where({ jobId }).get() // 获取用户接单列表
       user_jobList = await Promise.all(user_jobList.data.map(async item => {
-        const res = await user.where({ _openid: item._openid }).get()
+        let res = await fuser.where({ _openid: item._openid }).get()
+        res.data[0].avatarUrl = reg(res.data[0].avatarUrl)
         item.user = res.data[0]
         item.time = formatTime(item.time)
         return item
@@ -131,21 +139,14 @@ Page({
   },
   async onToggleJob(e) {
     const { user_job, user } = this.data
-    const { index } = e.currentTarget.dataset
-    const jobId = index._id
+    const { index } = e.currentTarget.dataset // 应该代表职位
     const currentJob = index
-    let { number } = this.data
-    let user_jobList = await user_job.where({ jobId }).get()
-    user_jobList = await Promise.all(user_jobList.data.map(async item => {
-      const res = await user.where({ _openid: item._openid }).get()
-      item.user = res.data[0]
-      return item
-    }))
-    number = number.map((item, index) => {
-      return user_jobList.filter(item => item.state == index).length
-    })
-    this.setData({ user_jobList, currentJob, show: false, number })
-    wx.showToast({ title: '切换成功' })
+    this.setData({ currentJob,show: false },() => 
+    { 
+      wx.showToast({ title: '切换成功' })
+    this.onLoad()
+  })
+    
   },
   onPhoneCalling(e) {
     console.log(e)

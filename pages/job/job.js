@@ -43,7 +43,7 @@ Page({
     })
     if (wx.getStorageSync('openid')) {
       const openid = wx.getStorageSync('openid')
-      const res = await job.where({ _openid: openid }).get()
+      const res = await job.where({ _openid: openid }).orderBy('time', 'desc').get();
       let stateCount = [0, 0, 0]
       const jobList = res.data.map(item => {
         item.time = formatTime(item.time) // 将时间对象转换为 ISO 格式的字符串

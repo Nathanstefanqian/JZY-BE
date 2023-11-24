@@ -37,7 +37,7 @@ Page({
     let { imageUrl } = this.data
     imageUrl = imageUrl + '/assets/boy.svg'
     let verifyType = ['个人', '企业']
-    if(wx.getStorageSync('verify') !== undefined) { // 如果有的话
+    if(wx.getStorageSync('verify') !== '') { // 如果有的话
       verifyType = verifyType[parseInt(wx.getStorageSync('verify'))]
     }
     else { // 如果没有的话

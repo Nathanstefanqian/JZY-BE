@@ -564,10 +564,11 @@ Page({
   onSubmit() {
     const { job } = this.data
     if (wx.getStorageSync('openid')) {
-      if (wx.getStorageSync('verify')) {
+      if (wx.getStorageSync('verify') == '') {
         wx.showToast({
           title: '请先实名', icon: 'error'
         })
+        return
       }
       const { jobTitle, salaryStart, salaryEnd, salaryShow, select, demand, desc, HireNumberRadio, contactValue, work, workPlace } = this.data
       let salary = ''

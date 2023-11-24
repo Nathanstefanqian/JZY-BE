@@ -5,14 +5,14 @@
 	<view class="resume-container">
 		<view class="card">
 			<view class="avatar">
-				<image class="add" src="{{ avatarUrl }}" mode="aspectFill" />
-				<image class="add" wx:for="{{ photoUrl }}" mode="aspectFill" src="{{ item }}" wx:key="index" />
+          <image class="add" src="{{ avatarUrl }}" mode="aspectFill" bindtap="onAvatarPreview" />
+				  <image class="add" wx:for="{{ photoUrl }}" mode="aspectFill" src="{{ item }}" wx:key="index" data-index="{{ index }}" bindtap="onPhotoPreview" />
 			</view>
 			<van-divider></van-divider>
 			<view class="basic">
 				<span>{{ name }}</span>
 				<view class="bottom">
-					<span>{{ personal.sex + '生'}}</span>
+					<span>{{ sex + '生'}}</span>
 					<span>·</span>
 					<span>{{ personal.age }}周岁</span>
 					<span>·</span>
@@ -23,7 +23,7 @@
 		<view class="card">
 			<view class="box">
 				<span>他想找的工作</span>
-				<span>{{ job.isPeriod + ' ; ' +  job.worktime + ' ; ' + job.workday + ' ; ' + job.workperiod + ' ; ' + job.name + ' ; ' }}</span>
+				<span>{{ jobLookingFor }}</span>
 			</view>
 			<van-divider></van-divider>
 			<view class="box">
@@ -31,7 +31,7 @@
 					<span>兼职经历</span>
 				</view>
 				<view class="experience" wx:for="{{ experienceList }}" wx:key="index">
-					<span>{{ item.name + " ; " + item.startTime + ' - ' + item.endTime + " ; " + item.desc + " ; " }}</span>
+					<span bindtap="onExperienceDetail" data-item="{{ item }}">{{ item.name + " ; " + item.startTime + ' - ' + item.endTime + " ; " + item.desc + " ; " }}</span>
 				</view>
 				<span wx:if="{{ experienceList.length === 0 }}">暂无兼职经历</span>
 			</view>
@@ -41,19 +41,20 @@
 					<span>技能证书</span>
 				</view>
 				<view class="experience" wx:for="{{ skillList }}" wx:key="index">
-					<span bindtap="onSkillDetailShow" data-index="{{ index }}">{{ item.skillName }}</span>
+					<span bindtap="onSkillDetailShow" data-item="{{ item }}">{{ item.skillName }}</span>
 				</view>
-				<span wx:if="{{ skillList.length === 0 }}" bindtap="onSkillDetailShow">暂无技能证书</span>
+				<span wx:if="{{ !skillList.length }}">暂无技能证书</span>
 			</view>
 			<van-divider></van-divider>
-			<view class="box">
+			<view class="box" bindtap="onContact">
 				<span>联系方式</span>
 				<span>
-					{{ contact.phone ?  " 电话: " + contact.phone + " ; 微信: " + contact.wx + " ; 邮箱: " + contact.email + " ; QQ: " + contact.qq + " ; " : '缺失' }}
+          {{ contactName }}
 				</span>
 			</view>
 		</view>
 	</view>
+
 </view>
 <van-action-sheet show="{{ show[0] }}" title="你想找的工作" bind:close="onClose">
 	<view class="action-container">
@@ -112,64 +113,61 @@
 	<view class="action-container">
 		<view class="box">
 			<span>公司名称</span>
-			<input placeholder="请输入就职公司名称" bindinput="onCompanyNameInput" value="{{ experience.name }}" />
+			<input placeholder="请输入就职公司名称" value="{{ experience.name }}" disabled />
 		</view>
-		<view class="box" bindtap="onTimeShow">
+		<view class="box">
 			<span>工作时间</span>
 			<input placeholder="请输入工作时间" disabled value="{{ time }}" />
 		</view>
 		<view class="box">
 			<span>工作描述</span>
-			<input placeholder="请输入职位工作描述" bindinput="onJobDescInput" value="{{ experience.desc }}" />
+			<input placeholder="请输入职位工作描述" disabled value="{{ experience.desc }}" />
 		</view>
 	</view>
-	<button bindtap="onExperienceConfirm">确认</button>
 </van-action-sheet>
 <van-action-sheet show="{{ show[2] }}" title="技能证书" bind:close="onClose">
 	<view class="action-container">
 		<view class="box">
 			<span>专业技能</span>
-			<input placeholder="请输入您的专业技能" bindinput="onSkillInput" />
+			<input placeholder="请输入您的专业技能" value="{{ skill.skillName }}" bindinput="onSkillInput" />
 		</view>
 		<view class="box">
 			<span>相关材料</span>
-			<input placeholder="点击上传相关材料" disabled bindtap="onUploadSkill" />
 			<view class="skill-picBox">
-				<view class="skill-picContainer" wx:for="{{ skillFileUrl }}" wx:key="index">
-					<image src="{{ item }}" />
+				<view class="skill-picContainer">
+          <image src="{{ item.url }}" wx:for="{{ skill.fileList }}"  style="margin: 20rpx 0;"mode="aspectFill" bindtap="onSkillPreview" data-skill="{{item}}" />
 				</view>
 			</view>
 		</view>
-		<button bindtap="onSkillConfirm">确认</button>
 	</view>
+
 </van-action-sheet>
 <van-action-sheet show="{{ show[3] }}" title="联系方式" bind:close="onClose">
 	<view class="action-container">
 		<view class="box">
 			<span>手机</span>
 			<view>
-				<input placeholder="请输入手机号" value="{{ contact.phone }}" bindinput="onPhoneInput" />
+				<input placeholder="暂无手机号" value="{{ contact.phone }}"  disabled />
 			</view>
 		</view>
 		<view class="box">
 			<span>邮箱</span>
 			<view>
-				<input placeholder="请输入邮箱" value="{{ contact.email }}" bindinput="onEmailInput" />
+				<input placeholder="暂无邮箱" value="{{ contact.email }}"  disabled />
 			</view>
 		</view>
 		<view class="box">
 			<span>微信</span>
 			<view>
-				<input placeholder="请输入微信号" value="{{ contact.wx }}" bindinput="onWxInput" />
+				<input placeholder="暂无微信号" value="{{ contact.wx }}" disabled />
 			</view>
 		</view>
 		<view class="box">
 			<span>QQ</span>
 			<view>
-				<input placeholder="请输入QQ号" value="{{ contact.qq }}" bindinput="onQQInput" />
+				<input placeholder="暂无QQ号" value="{{ contact.qq }}" disabled />
 			</view>
 		</view>
-		<button bind:tap="onContactConfirm">确认</button>
 	</view>
 </van-action-sheet>
 <van-action-sheet show="{{ show[4] }}" title="个人信息" bind:close="onClose">
@@ -217,19 +215,4 @@
 		bind:confirm="onTimePickerConfirm"
 		bind:cancel="onTimeSelectorClose"
 	/>
-</van-popup>
-<van-popup show="{{ skillShow }}" bind:close="onClose" custom-class="popup">
-	<view class="skillShow-container">
-		<view class="title">
-			<span>技能名称</span>
-		</view>
-		<span>{{ skillShowItem.skillName }}</span>
-		<view>技能证书</view>
-		<view>
-			<view class="picBox">
-				<image src="{{ item }}" wx:for="{{ skillShowItem.skillFileUrl }}" mode="aspectFill" />
-			</view>
-		</view>
-		<view wx:for="{{ skill-picBox }}"></view>
-	</view>
 </van-popup>

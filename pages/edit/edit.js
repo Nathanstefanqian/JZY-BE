@@ -61,8 +61,11 @@ Page({
     const { id } = e
     if (id) { // 如果是修改的
       const openid = wx.getStorageSync('openid')
+      console.log(openid)
       const res = await user.where({ _openid: openid }).get()
+      console.log(res)
       const info = res.data[0]
+      console.log(info)
       this.setData({
         avatarUrl: info.url,
         nickName: info.nickName,
@@ -149,6 +152,14 @@ Page({
     let { nickName, name, sex, phone, avatarUrl, imageUrl, user, c1 } = this.data
     console.log(nickName, name, sex, phone, avatarUrl)
     if (avatarUrl == `${{ imageUrl }}/assets/boy.svg`) avatarUrl = ''  // 默认图片设置为空
+    let phoneNumberRegex = /^1([3456789])\d{9}$/;
+    if(!phoneNumberRegex.test(phone)) {
+      wx.showToast({
+        title: '手机号不正确',
+        icon:'error'
+      })
+      return
+    }
     const obj = {
       nickName, name, sex, phone, url: avatarUrl
     }
@@ -170,8 +181,8 @@ Page({
     await c1.callFunction({
       name: 'getOpenId',
       complete: res => {
-        console.log(res)
-        const { openId } = res.result
+        console.log('获取', res)
+        const { openId } = res.result.event.userInfo
         wx.setStorageSync('openid', openId)
       }
     })

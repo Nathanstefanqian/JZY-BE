@@ -23,7 +23,7 @@
   margin-bottom: 100rpx;
 }
 
-.resume-container {
+.container {
   width: 100%;
   height:1300rpx;
   overflow: scroll;
@@ -55,15 +55,15 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 92rpx;
-  height: 92rpx;
+  width: 90rpx;
+  height: 90rpx;
   background-color: #f6f7fb;
   border-radius: 20rpx;
 }
 
 .card .avatar image {
-  width: 92rpx;
-  height: 92rpx;
+  width: 90rpx;
+  height: 90rpx;
   margin-right: 20rpx;
 }
 
@@ -112,9 +112,16 @@ header {
   margin-right: 20rpx;
 }
 
+.experience {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .experience > span {
   font-size: 28rpx;
   color: grey;
+  width: 100px;
 }
 
 .action-container {
@@ -143,17 +150,17 @@ header {
 
 .skill-picContainer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 100%;
   align-items: center;
   padding: 20rpx 0rpx;
-  border: 2rpx solid;
-  width: 128rpx;
   margin-right: 20rpx;
 }
 
+
+
 .skill-picBox image {
-  width: 128rpx;
-  height: 128rpx;
+  border-radius: 20rpx;
 }
 
 .action-container .timeBox {
@@ -207,4 +214,8 @@ header {
   width: 50%;
   left: 200rpx;
   bottom: -50rpx;
+}
+
+.experience-btn {
+  display: flex;
 }
