@@ -16,12 +16,11 @@ const formatTime = (timeString) => {
 Page({
   data: {
     isEmpty: false,
-    number: ['', '', '', ''],
     show: false,
+    number: [0,0,0,0],
     contactShow: false,
     bJob: [],
     currentJob: {},
-    currentJobId: '',
     phone: '',
     c1: Object,
     job: Object,
@@ -31,20 +30,20 @@ Page({
 
   async onLoad(options) {
     let c1 = new wx.cloud.Cloud({
-      resourceAppid: 'wxcd21eb64b26e4b50',
-      resourceEnv: 'jzy-1gjdmixbb2d05e5f',
+      resourceAppid: 'wxb6b66008bee95427',
+      resourceEnv: 'jzy-2gzzv7vae99329fb',
     })
     await c1.init()
     const job = c1.database().collection('job')
-    const user = c1.database().collection('buser')    
-    const fuser = c1.database().collection('user')    
+    const user = c1.database().collection('buser')
+    const fuser = c1.database().collection('user')
     const user_job = c1.database().collection('user_job')
     this.setData({ c1, job, user, user_job })
     wx.showLoading({
       title: '加载中',
       mask: true
     })
-    if (wx.getStorageSync('openid')) {
+    if (wx.getStorageSync('isLogin')) {
       // 获取当前商家所有的岗位
       let { number } = this.data
       const openid = wx.getStorageSync('openid')
@@ -53,8 +52,8 @@ Page({
       res.data.map(item => {
         if (item.state == 0) bJob.push(item)
       }) // 将所有的跟该商家有关的职位全部缓存到bJob
-      
-      if (!bJob.length) {
+
+      if (!bJob.length) { // 如果该商家没有发布过岗位
         wx.hideLoading()
         let { currentJob } = this.data
         currentJob.jobTitle = '当前未发布职位'
@@ -62,38 +61,40 @@ Page({
           currentJob
         })
         return
-      } 
-      let { currentJob } = this.data
-      if(Object.keys(currentJob).length === 0) { // 如果是第一次初始化
+      }
+      let { currentJob } = this.data // 如果是切换职位，那么加载该职位
+      if (Object.keys(currentJob).length === 0) { // 如果是第一次初始化，默认将最新的职位进行加载
         currentJob = bJob[0]
       }
-      const jobId = currentJob._id
-      // user_job表中查找最近发布的一个职位,并加载与该岗位相关的信息
+      const jobId = currentJob._id // 获取到当前职位的id
       let user_jobList = await user_job.where({ jobId }).get() // 获取用户接单列表
       user_jobList = await Promise.all(user_jobList.data.map(async item => {
-        let res = await fuser.where({ _openid: item._openid }).get()
-        res.data[0].avatarUrl = reg(res.data[0].avatarUrl)
-        item.user = res.data[0]
-        item.time = formatTime(item.time)
+        let res = await fuser.where({ _openid: item._openid }).get() // 获取到客户端的user信息
+        res.data[0].avatarUrl = reg(res.data[0].avatarUrl) // 头像url转换为https形式
+        item.user = res.data[0] // 添加用户信息到列表中
+        item.time = formatTime(item.time) // 转换时间戳为字符串
         return item
       }))
       number = number.map((item, index) => {
         return user_jobList.filter(item => item.state == index).length
-      })
+      }) // 这是一个统计状态数量的列表
       this.setData({ user_jobList, currentJob, number, bJob }, () => wx.hideLoading())
     } else {
       wx.hideLoading()
       wx.showToast({ title: '请先登录', icon: 'error' })
     }
   },
+  
   onShow() {
     this.onLoad()
   },
+
   onToggle() {
     this.setData({
       show: true
     })
   },
+
   onClose() {
     this.setData({
       show: false,
@@ -141,12 +142,11 @@ Page({
     const { user_job, user } = this.data
     const { index } = e.currentTarget.dataset // 应该代表职位
     const currentJob = index
-    this.setData({ currentJob,show: false },() => 
-    { 
+    this.setData({ currentJob, show: false }, () => {
       wx.showToast({ title: '切换成功' })
-    this.onLoad()
-  })
-    
+      this.onLoad()
+    })
+
   },
   onPhoneCalling(e) {
     console.log(e)

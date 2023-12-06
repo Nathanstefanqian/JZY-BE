@@ -28,11 +28,11 @@
 	<view class="card">
 		<image src="{{ imageUrl }}/assets/employ.svg" mode="aspectFit" />
 		<view class="col2">
-			<view class="title">我要兼职</view>
-			<view class="subtitle">海量真实兼职任你挑</view>
+			<view class="title">我要发布</view>
+			<view class="subtitle">随时发布你的需求</view>
 		</view>
 		<view class="col3">
-			<view class="btn">寻找兼职</view>
+			<view class="btn" bindtap="onPublish">发布需求</view>
 		</view>
 	</view>
 	<view class="card flex-column">
@@ -52,3 +52,10 @@
 		</view>
 	</view>
 </view>
+
+<van-action-sheet
+  show="{{ jobShow }}"
+  actions="{{ actions }}"
+  bind:close="onClose"
+  bind:select="onSelect"
+/>

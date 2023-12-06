@@ -158,3 +158,20 @@
 		<button style="width: 100%" bindtap="onClipboard">电话：{{ phone }}</button>
 	</view>
 </van-action-sheet>
+
+<!-- <van-popup show="{{ show }}" bind:close="onClose" class="popup">
+  <view class="popup-container">
+    <view class="title">
+      <span>跑腿名称</span>
+      <span>{{ currentJob.jobTitle }}</span>
+    </view>
+    <view class="title">
+      <span>跑腿描述</span>
+      <span>{{ currentJob.desc }}</span>
+    </view>
+    <view class="title">
+      <span>送达地址</span>
+      <span>{{ currentJob.destPlace.name }}</span>
+    </view>
+  </view>
+</van-popup> -->

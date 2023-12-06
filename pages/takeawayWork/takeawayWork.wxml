@@ -1,0 +1,92 @@
+<!--pages/home/home.wxml-->
+<view class="bg">
+	<view class="head">跑腿</view>
+	<view class="job">
+		<span bindtap="onPopup">{{ currentJob.jobTitle ? currentJob.jobTitle: '暂无跑腿' }}</span>
+		<view class="btn" bindtap="onLog">
+			<span>查看跑腿</span>
+		</view>
+	</view>
+	<view class="main-container">
+		<van-tabs active="{{ active }}" color="#fd7753" animated>
+			<van-tab title="跑腿进度">
+				<van-empty description="正在等待接单" wx:if="{{ !user_jobList.length }}" />
+        <view class="tab-container" wx:else>
+					<view
+						class="box"
+						wx:for="{{ user_jobList }}"
+						wx:key="index"
+						wx:if="{{ item.state == 0 }}"
+					>
+						<view class="top">
+							<image src="{{ item.user.avatarUrl }}" mode="aspectFill" class="avatar" bindtap="onDetail" data-index="{{ item._openid }}" />
+							<view class="info">
+								<view class="info-top">
+									<span class="name">{{ item.user.name}}</span>
+									<view class="time">{{ item.time }} 接单</view>
+								</view>
+								<view class="info-bot">
+									<span>{{item.user.personal.age}}岁</span>
+									<span></span>
+									<span>{{ item.user.personal.sex }}</span>
+									<span>|</span>
+									<span>{{ item.user.school }}</span>
+									<span>|</span>
+									<span>{{ item.user.grade }}</span>
+								</view>
+							</view>
+						</view>
+						<view class="bottom">
+							<view class="ibtn first" bindtap="onPhoneCalling" data-index="{{ item }}">☎️</view>
+						</view>
+            <view class="log">
+              <view wx:if="{{ progress ==  1 }}">当前已接单，骑手正在赶往取货点</view>
+              <view wx:if="{{ progress ==  2 }}" >
+                <image bindtap="onPreview" data-url="{{ ihaveTakenUrl }}" src="{{ ihaveTakenUrl }}" mode="aspectFill" />
+                <view>已取货 等待送达</view>
+              </view>
+              <view wx:if="{{ progress ==  3 }}">
+                <view>骑手已送达，确认无误后可以点击确认送达</view>
+                <image bindtap="onPreview" data-url="{{ ihaveTakenUrl }}" src="{{ ihaveDeliveredUrl }}" mode="aspectFill" />
+                <button type="primary" bindtap="onIhaveGot">确认送达</button>
+              </view>
+            </view>
+					</view>
+				</view>
+			</van-tab>
+			<van-tab title="位置详情">
+        <view class="mapper" wx:if="{{ user_jobList.length }}">
+          <map id="myMap" class="map" latitude="{{ latitude }}" longitude="{{ longitude }}" markers="{{markers}}" show-location="{{ true }}"></map>   
+        </view>
+				<van-empty description="当前无地图显示" wx:else />
+			</van-tab>
+		</van-tabs>
+	</view>
+</view>
+<van-action-sheet show="{{ contactShow }}" title="联系方式" bind:close="onClose" bind:select="onSelect">
+	<view class="action-container">
+		<button style="width: 100%" bindtap="onClipboard">电话：{{ phone }}</button>
+	</view>
+</van-action-sheet>
+
+<van-popup show="{{ show }}" bind:close="onClose" class="popup">
+  <view class="popup-container">
+    <view class="title">
+      <span>跑腿名称</span>
+      <span>{{ currentJob.jobTitle }}</span>
+    </view>
+    <view class="title">
+      <span>跑腿描述</span>
+      <span>{{ currentJob.desc }}</span>
+    </view>
+    <view class="title">
+      <span>取货地址</span>
+      <span>{{ currentJob.workPlace.name }}</span>
+    </view>
+    <view class="title">
+      <span>送达地址</span>
+      <span>{{ currentJob.destPlace.name }}</span>
+    </view>
+    <!-- <button type="warn" bindtap="onCancel">取消跑腿</button> -->
+  </view>
+</van-popup>

@@ -1,1 +1,1 @@
-<button bindtap="test">测试</button>
+<button bindtap="onTap">测试</button>

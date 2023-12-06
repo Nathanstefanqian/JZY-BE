@@ -43,6 +43,10 @@
 				<span>负责人职位</span>
 				<input placeholder="点击选择负责人职位" value="{{ companyInfo.job }}" bindinput="onCompanyJobInput" />
 			</view>
+      <view>
+          <span>法人姓名</span>
+          <input placeholder="请输入法人姓名" value="{{ name }}" bindinput="onNameInput" />
+			  </view>
 		</view>
     <view class="upload-area" style="margin-top: 40rpx">
       <image src="{{ companyImage }}" mode="aspectFill"></image>

@@ -1,0 +1,136 @@
+/* pages/publish/publish.wxss */
+.head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 48rpx;
+  margin-bottom: 48rpx;
+}
+
+.pag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  color: grey;
+  font-size: 32rpx;
+}
+
+.body {
+  width: 100%;
+  padding: 20rpx 0;
+}
+
+.box {
+  margin-bottom: 48rpx;
+}
+
+.box > span:first-child {
+  color: red;
+}
+
+.box .salary-name {
+  display: flex;
+}
+
+.salary-name view:nth-child(2) {
+  margin-left: 20rpx;
+}
+
+.box > input {
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  height: 92rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.input {
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  height: 92rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.box .textarea {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 10rpx 25rpx;
+  height: 150rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.action-container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.salary {
+  margin-bottom: 48rpx;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+}
+.contact view {
+  display: flex;
+}
+.contact view input:nth-child(2) {
+  margin-left: 20rpx;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150rpx;
+  height: 70rpx;
+  margin-top: 24rpx;
+  margin-left: 20rpx;
+  padding: 10rpx 25rpx;
+  background-color: #f6f8f9;
+  border-radius: 24rpx;
+}
+
+.desc {
+  display: flex;
+  height: 420rpx !important;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20rpx 25rpx;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+  background-color: #f6f8f9;
+}
+
+.btn {
+  display: flex;
+  margin-bottom: 24rpx;
+}
+
+.btn button:nth-child(2) {
+  background-color: rgba(253, 119, 83, 1);
+  color: #fff;
+  margin-left: 90rpx;
+  width: 100%;
+}
+
+.highlight {
+  color: red;
+}
+
+.modify {
+  display: flex;
+}

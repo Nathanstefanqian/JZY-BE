@@ -1,0 +1,77 @@
+<back></back>
+
+<view class="container">
+	<view class="head">
+		<view class="title">{{ page === 1 ? '跑腿关键信息' : '完善跑腿信息' }}</view>
+		<view class="pag">
+			<span>{{page}}/2</span>
+			<van-tag type="primary" wx:if="{{ isJump }}" bindtap="onCancelModify">正在修改信息</van-tag>
+		</view>
+	</view>
+	<!-- 第一页 -->
+	<view class="body" wx:if="{{ page === 1 }}">
+		<view class="box">
+			<span>*</span>
+			<span> 跑腿标题</span>
+			<input type="text" placeholder="请输入标题" value="{{ jobTitle }}" bindinput="onTitleInput" />
+		</view>
+		<view class="box" bindtap="onTime">
+			<span>*</span>
+			<span> 预期收货时间</span>
+			<input disabled placeholder="请选择预期收货时间" value="{{ time }}" />
+		</view>
+		<view class="box" bindtap="onLocation">
+			<span>*</span>
+			<span> 取货地点</span>
+			<input disabled placeholder="请选择取货地点" value="{{ workPlace.name }}" />
+		</view>
+    <view class="box" bindtap="onDestLocation">
+			<span>*</span>
+			<span> 送货地点</span>
+			<input disabled placeholder="请选择送货地点" value="{{ destPlace.name }}" />
+		</view>
+    <view class="box">
+			<span>*</span>
+			<span> 薪酬(元)</span>
+			<input placeholder="请输入薪酬" value="{{ salaryEnd }}" bindinput="onSalaryInput" />
+		</view>
+		<view class="box">
+			<span>*</span>
+			<span> 联系方式</span>
+			<view class="contact">
+				<input placeholder="请输入联系方式" class="input" value="{{ contactValue }}" bindinput="onContactValueInput" />
+				<view class="select" bindtap="onContact">{{ select.selectContact }}</view>
+			</view>
+		</view>
+		<van-divider />
+		<button style="width: 100%; " bindtap="onNext" type="primary">下一步</button>
+	</view>
+	<!-- 第二页 -->
+	<view class="body" wx:else>
+		<view class="box">
+			<span>*</span>
+			<span> 备注</span>
+			<textarea type="text" class="desc" placeholder="请输入备注（详细地址，跑腿需求）" value="{{ desc }}" bindinput="onDescInput" />
+		</view>
+
+		<van-divider />
+		<view class="btn">
+			<button bindtap="onPrevious">上一步</button>
+			<button bindtap="onSubmit">发布跑腿</button>
+		</view>
+	</view>
+</view>
+<van-action-sheet show="{{ show }}" title="用工时间" bind:close="onClose">
+	<view class="action-container">
+    <van-datetime-picker
+      type="datetime"
+      value="{{ currentDate }}"
+      bind:input="onTimeInput"
+      show-toolbar="{{false}}"
+    />
+    <button type="primary" style="margin-top: 50rpx;" bindtap="onTimeConfirm">确定</button>
+	</view>
+</van-action-sheet>
+<van-action-sheet title="{{ title }}" show="{{ selectShow }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" />
+<van-calendar show="{{ calendarShow }}" type="range" bind:close="onClose" bind:confirm="onConfirm" />
+<van-calendar show="{{ calendarSingleShow }}"  bind:close="onClose" bind:confirm="onConfirmSingle" />

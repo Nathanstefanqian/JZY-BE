@@ -1,6 +1,5 @@
 const { Contact, SalaryTime, isNull } = require('../../data/data')
 const job = wx.cloud.database().collection('job')
-
 const formatDate = date => {
   date = new Date(date);
   return `${date.getMonth() + 1}/${date.getDate()}`;
@@ -64,12 +63,8 @@ Page({
         ]
       },
       {
-        text: '工作时间',
+        text: '是否周末',
         children: [
-          {
-            text: '不限',
-            id: 2
-          },
           {
             text: '周末节假日',
             id: 3
@@ -94,10 +89,6 @@ Page({
           {
             text: '晚班',
             id: 8
-          },
-          {
-            text: '不限',
-            id: 9
           }
         ]
       }
@@ -106,10 +97,6 @@ Page({
       {
         text: '每周工作天数',
         children: [
-          {
-            text: '不限',
-            id: 1,
-          },
           {
             text: '1-2天',
             id: 2,
@@ -125,12 +112,8 @@ Page({
         ],
       },
       {
-        text: '工作时间',
+        text: '是否周末',
         children: [
-          {
-            text: '不限',
-            id: 1
-          },
           {
             text: '周末节假日',
             id: 2
@@ -144,10 +127,6 @@ Page({
       {
         text: '工作时段(多选）',
         children: [
-          {
-            text: '不限',
-            id: 1
-          },
           {
             text: '早班',
             id: 2
@@ -565,15 +544,13 @@ Page({
   onSubmit() {
     const { job } = this.data
     if (wx.getStorageSync('openid')) {
-      const verify = wx.getStorageSync('verify')
-      console.log(typeof verify)
       if (typeof verify != 'number') {
         wx.showToast({
           title: '请先实名', icon: 'error'
         })
         return
       }
-      let { jobTitle, salaryStart, salaryEnd, salaryShow, select, demand, desc, HireNumberRadio, contactValue, work, workPlace } = this.data
+      const { jobTitle, salaryStart, salaryEnd, salaryShow, select, demand, desc, HireNumberRadio, contactValue, work, workPlace } = this.data
       let salary = ''
       if (salaryShow === true) {
         salary = '固定薪资'
@@ -581,7 +558,7 @@ Page({
         salary = '范围薪资'
       }
       let obj = {
-        jobTitle, salary, salaryStart, salaryEnd, work, workPlace, contactValue, select, demand, desc, HireNumberRadio,
+        jobTitle, salary, salaryStart, salaryEnd, work, workPlace, contactValue, select, demand, desc
       }
 
       if (!checkParams(obj)) {
@@ -601,7 +578,7 @@ Page({
               obj.time = currentTime
               obj.updateTime = currentTime
               obj.state = 0
-              obj.isTeacher = 0
+              obj.isTeacher = 1
               job.where({ _id }).update({
                 data: obj,
                 complete: res => {
@@ -624,7 +601,7 @@ Page({
             obj.time = currentTime
             obj.updateTime = currentTime
             obj.state = 0
-            obj.isTeacher = 0
+            obj.isTeacher = 1
             job.add({
               data: obj,
               complete: res => {

@@ -136,7 +136,6 @@ const isNull = {
   salaryEnd: "薪资不能为空",
   contactValue: "联系方式不能为空",
   HireNumberRadio: '请选择招聘人数',
-  work: '',
   desc: '职位描述不能为空',
   demand: '人员需求不能为空',
   workPlace: '请选择工作地点',

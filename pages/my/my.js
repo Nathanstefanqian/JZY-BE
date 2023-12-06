@@ -8,11 +8,26 @@ Page({
     nickName: '',
     name: '',
     verifyType: '',
+    jobShow: false,
     verify: Object,
     c1: Object,
     job: Object,
     user: Object,
-    user_job: Object
+    user_job: Object,
+    actions: [
+      {
+        name: '发布家教',
+        id: 0
+      },
+      {
+        name: '发布兼职',
+        id: 1
+      },
+      {
+        name: '发布跑腿',
+        id: 2
+      },
+    ],
   },
 
   onShow() {
@@ -21,12 +36,12 @@ Page({
 
   async onLoad() {
     let c1 = new wx.cloud.Cloud({
-      resourceAppid: 'wxcd21eb64b26e4b50',
-      resourceEnv: 'jzy-1gjdmixbb2d05e5f',
+      resourceAppid: 'wxb6b66008bee95427',
+      resourceEnv: 'jzy-2gzzv7vae99329fb',
     })
     await c1.init()
     const job = c1.database().collection('job')
-    const user = c1.database().collection('buser')    
+    const user = c1.database().collection('buser')
     const user_job = c1.database().collection('user_job')
     const verify = c1.database().collection('verify')
     this.setData({ c1, job, user, user_job, verify })
@@ -37,7 +52,7 @@ Page({
     let { imageUrl } = this.data
     imageUrl = imageUrl + '/assets/boy.svg'
     let verifyType = ['个人', '企业']
-    if(wx.getStorageSync('verify') !== '') { // 如果有的话
+    if (wx.getStorageSync('verify') !== '') { // 如果有的话
       verifyType = verifyType[parseInt(wx.getStorageSync('verify'))]
     }
     else { // 如果没有的话
@@ -55,37 +70,60 @@ Page({
   },
 
   async onLogin() {
-    const { user, c1, verify } = this.data
-    // todo
-    await c1.callFunction({
-      name: 'getOpenId',
-      complete: async ress => {
-        const { openId } = ress.result.event.userInfo
-        const res = await user.where({
-          _openid: openId
-        }).get()
-        if (!res.data.length) { // 如果没找到则引导注册
-          wx.navigateTo({
-            url: '../edit/edit'
-          })
-        } 
-        else { // 如果找到则立即登录
-          const data = res.data[0]
-          for (const key in data) {
-            wx.setStorageSync(key, data[key])
-          }
-          const r = await verify.where({ _openid: openId }).get()
-          if(r.data[0]) {
-            const { type } = r.data[0]
-            wx.setStorageSync('verify', parseInt(type))
-          }
-          wx.setStorageSync('openid', openId)
-          wx.setStorageSync('isLogin', true)
-          wx.showToast({ title: '登录成功' })
-          setTimeout(() => this.onLoad(), 2000)
-        }
+    const { user, verify } = this.data
+    const openid = wx.getStorageSync('openid')
+    const res = await user.where({
+      _openid: openid
+    }).get()
+    if (!res.data.length) { // 如果没找到则引导注册
+      wx.navigateTo({
+        url: '../edit/edit'
+      })
+    }
+    else { // 如果找到则立即登录
+      const data = res.data[0]
+      for (const key in data) {
+        wx.setStorageSync(key, data[key])
       }
-    })
+      const r = await verify.where({ _openid: openid }).get()
+      if (r.data[0]) {
+        const { type } = r.data[0]
+        wx.setStorageSync('verify', parseInt(type))
+      }
+      wx.setStorageSync('isLogin', true)
+      wx.showToast({ title: '登录成功' })
+      setTimeout(() => this.onLoad(), 2000)
+    }
+  },
+
+  onPublish() {
+    if(wx.getStorageSync('isLogin')) {
+      this.setData({ jobShow: true })
+    } else {
+      wx.showToast({ title: '请先登录', icon: 'error'} )
+    }
+  },
+
+  onClose() {
+    this.setData({ jobShow: false })
+  },
+
+  onSelect(e) {
+    const { id } = e.detail
+    if (id == 1) {
+      wx.navigateTo({
+        url: '../publish/publish'
+      })
+    }
+    else if (id == 2) {
+      wx.navigateTo({
+        url: '../takeaway/takeaway'
+      })
+    } else {
+      wx.navigateTo({
+        url: '../teacher/teacher'
+      })
+    }
   },
 
   onEdit() {
@@ -104,9 +142,26 @@ Page({
     })
   },
 
-  onExit() {
+  async onExit() {
     wx.clearStorageSync()
     wx.setStorageSync('isLogin', false)
+    let c1 = new wx.cloud.Cloud({
+      // 资源方 小程序A的 AppID
+      resourceAppid: 'wxb6b66008bee95427',
+      // 资源方 小程序A的 的云开发环境ID
+      resourceEnv: 'jzy-2gzzv7vae99329fb',
+    })
+
+    // // 跨账号调用，必须等待 init 完成
+    await c1.init()
+    await c1.callFunction({
+      name: 'getOpenid',
+      complete: res => {
+        console.log('获取', res)
+        const { openId } = res.result.event.userInfo
+        wx.setStorageSync('openid', openId)
+      }
+    })
     wx.showToast({ title: '退出成功' })
     setTimeout(() => this.onLoad(), 2000)
   },

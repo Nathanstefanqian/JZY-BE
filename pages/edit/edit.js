@@ -3,8 +3,8 @@ const { reg } = require('../../config/index')
 // todo
 const uploadFile = async url => {
   let c1 = new wx.cloud.Cloud({
-    resourceAppid: 'wxcd21eb64b26e4b50',
-    resourceEnv: 'jzy-1gjdmixbb2d05e5f',
+    resourceAppid: 'wxb6b66008bee95427',
+    resourceEnv: 'jzy-2gzzv7vae99329fb',
   })
   await c1.init()
   const name = url.substring(url.lastIndexOf('/') + 1).toLowerCase()
@@ -30,12 +30,9 @@ Page({
     c1: Object,
     job: Object,
     user: Object,
-    user_job: Object,
     imageUrl,
     action: '',
-    title: '',
     avatarUrl: '',
-    nickName: '',
     name: '',
     phone: '',
     sex: '',
@@ -43,14 +40,13 @@ Page({
   },
   async onLoad(e) {
     let c1 = new wx.cloud.Cloud({
-      resourceAppid: 'wxcd21eb64b26e4b50',
-      resourceEnv: 'jzy-1gjdmixbb2d05e5f',
+      resourceAppid: 'wxb6b66008bee95427',
+      resourceEnv: 'jzy-2gzzv7vae99329fb',
     })
     await c1.init()
     const job = c1.database().collection('job')
     const user = c1.database().collection('buser')
-    const user_job = c1.database().collection('user_job')
-    this.setData({ c1, job, user, user_job })
+    this.setData({ c1, job, user })
     // 初始化一下头像
     let { imageUrl } = this.data
     this.setData({ avatarUrl: imageUrl + '/assets/boy.svg' })
@@ -61,16 +57,10 @@ Page({
     const { id } = e
     if (id) { // 如果是修改的
       const openid = wx.getStorageSync('openid')
-      console.log(openid)
       const res = await user.where({ _openid: openid }).get()
-      console.log(res)
       const info = res.data[0]
-      console.log(info)
       this.setData({
         avatarUrl: info.url,
-        nickName: info.nickName,
-        major: info.major,
-        schoolId: info.schoolId,
         name: info.name,
         phone: info.phone,
         sex: info.sex,
@@ -92,12 +82,9 @@ Page({
       sizeType: ['compressed'], // 所选的图片的尺寸压缩方式
       sourceType: ['album', 'camera'], // 选择图片的来源，可以从相册选择或使用相机拍摄
       async success(res) {
-        console.log(res)
         const url = res.tempFilePaths[0]
         const avatarUrl = await uploadFile(url)
-        that.setData({
-          avatarUrl
-        }, () => {
+        that.setData({ avatarUrl }, () => {
           wx.showToast({ title: '选择成功' })
         })
       }
@@ -107,12 +94,6 @@ Page({
     const { value } = e.detail
     this.setData({
       name: value
-    })
-  },
-  onNickName(e) {
-    const { value } = e.detail
-    this.setData({
-      nickName: value
     })
   },
   onSex() {
@@ -129,13 +110,6 @@ Page({
       phone: value
     })
   },
-  onGetUserInfo(e) {
-    const rawData = JSON.parse(e.detail.rawData)
-    this.setData({
-      nickName: rawData.nickName,
-      avatarUrl: rawData.avatarUrl
-    })
-  },
   onSelect(e) {
     const { name } = e.detail
     const { index } = this.data
@@ -149,43 +123,33 @@ Page({
     this.setData({ verifyType: e.detail })
   },
   async onSubmit() {
-    let { nickName, name, sex, phone, avatarUrl, imageUrl, user, c1 } = this.data
-    console.log(nickName, name, sex, phone, avatarUrl)
+    let { name, sex, phone, avatarUrl, imageUrl, user, c1 } = this.data
     if (avatarUrl == `${{ imageUrl }}/assets/boy.svg`) avatarUrl = ''  // 默认图片设置为空
-    let phoneNumberRegex = /^1([3456789])\d{9}$/;
-    if(!phoneNumberRegex.test(phone)) {
+    let phoneNumberRegex = /^1([3456789])\d{9}$/
+    if (!phoneNumberRegex.test(phone)) {
       wx.showToast({
         title: '手机号不正确',
-        icon:'error'
+        icon: 'error'
       })
       return
     }
     const obj = {
-      nickName, name, sex, phone, url: avatarUrl
+      name, sex, phone, url: avatarUrl
     }
     // 检查非空
     for (const item of Object.values(obj)) {
-      console.log(item)
       if (!item) {
         wx.showToast({ title: '请检查信息填写完整', icon: 'error' })
         return  // 发现数据为空时直接返回，退出函数
       }
     }
-    const res = await user.add({
+    await user.add({
       data: obj
     })
-    for (let key in obj) {
+    for (let key in obj) { // 设置本地存储
       wx.setStorageSync(key, obj[key])
     }
-    // 注册后调取云函数获得openid
-    await c1.callFunction({
-      name: 'getOpenId',
-      complete: res => {
-        console.log('获取', res)
-        const { openId } = res.result.event.userInfo
-        wx.setStorageSync('openid', openId)
-      }
-    })
+
     wx.setStorageSync('isLogin', true)
     wx.showToast({
       icon: 'success',
@@ -194,16 +158,14 @@ Page({
     setTimeout(() => wx.navigateBack(), 2000)
   },
   async onModify() {
-    let { nickName, name, sex, phone, avatarUrl, imageUrl, user } = this.data
-    console.log(nickName, name, sex, phone, avatarUrl)
+    let { name, sex, phone, avatarUrl, imageUrl, user } = this.data
     if (avatarUrl == `${{ imageUrl }}/assets/boy.svg`) avatarUrl = ''
     const obj = {
-      nickName, name, sex, phone, url: avatarUrl
+      name, sex, phone, url: avatarUrl
     }
     // 检查非空
     for (const item of Object.values(obj)) {
       if (!item) {
-        console.log(item)
         wx.showToast({ title: '请检查信息填写完整', icon: 'error' })
         return  // 发现数据为空时直接返回，退出函数
       }

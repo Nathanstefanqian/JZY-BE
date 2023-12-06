@@ -29,19 +29,19 @@ Page({
   },
   async onLoad(e) {
     let c1 = new wx.cloud.Cloud({
-      resourceAppid: 'wxcd21eb64b26e4b50',
-      resourceEnv: 'jzy-1gjdmixbb2d05e5f',
+      resourceAppid: 'wxb6b66008bee95427',
+      resourceEnv: 'jzy-2gzzv7vae99329fb',
     })
     await c1.init()
     const job = c1.database().collection('job')
-    const user = c1.database().collection('buser')    
+    const user = c1.database().collection('buser')
     const user_job = c1.database().collection('user_job')
     this.setData({ c1, job, user, user_job })
     wx.showLoading({
       title: '加载中',
       mask: true
     })
-    if (wx.getStorageSync('openid')) {
+    if (wx.getStorageSync('isLogin')) {
       const openid = wx.getStorageSync('openid')
       const res = await job.where({ _openid: openid }).orderBy('time', 'desc').get();
       let stateCount = [0, 0, 0]
@@ -104,9 +104,16 @@ Page({
     const res = await job.where({ _id: currentIndex }).get()
     const item = res.data[0]
     wx.setStorageSync('job', item)
-    wx.switchTab({
-      url: '../publish/publish'
-    })
+    if(item.isTeacher) {
+      wx.navigateTo({
+        url: '../teacher/teacher'
+      })
+    } else {
+      wx.navigateTo({
+        url: '../publish/publish'
+      })
+    }
+
     wx.setStorageSync('isJump', true)
   },
   async onCloseJob() {

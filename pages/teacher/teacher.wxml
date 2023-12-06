@@ -1,7 +1,7 @@
 <back></back>
 <view class="container">
 	<view class="head">
-		<view class="title">{{ page === 1 ? '职位关键信息' : '完善职位信息' }}</view>
+		<view class="title">{{ page === 1 ? '家教关键信息' : '完善家教信息' }}</view>
 		<view class="pag">
 			<span>{{page}}/2</span>
 			<van-tag type="primary" wx:if="{{ isJump }}" bindtap="onCancelModify">正在修改信息</van-tag>
@@ -11,12 +11,12 @@
 	<view class="body" wx:if="{{ page === 1 }}">
 		<view class="box">
 			<span>*</span>
-			<span> 职位标题</span>
+			<span> 家教标题</span>
 			<input type="text" placeholder="请输入标题" value="{{ jobTitle }}" bindinput="onTitleInput" />
 		</view>
 		<view class="box" bindtap="onTime">
 			<span>*</span>
-			<span>用工日期与时间</span>
+			<span>家教日期与时间</span>
       <view class="textarea">
         <span>{{ work[0] ? work[0] : '请选择用工日期与时间' }}</span>
         <span>{{ work[1] }}</span>
@@ -65,20 +65,13 @@
 	<view class="body" wx:else>
 		<view class="box">
 			<span>*</span>
-			<span> 职位描述</span>
-			<textarea type="text" class="desc" placeholder="请输入该职位的描述" value="{{ desc }}" bindinput="onDescInput" />
+			<span> 孩子状况描述</span>
+			<textarea type="text" class="desc" placeholder="请输入您孩子状况的描述" value="{{ desc }}" bindinput="onDescInput" />
 		</view>
 		<view class="box">
 			<span>*</span>
-			<span> 招聘人数</span>
-      <view style="margin-top: 20rpx">
-        <van-stepper value="{{ HireNumberRadio }}" bind:change="onHireNumberChange" min="1" max="10"/>
-      </view>
-		</view>
-		<view class="box">
-			<span>*</span>
-			<span> 人员需求</span>
-			<textarea type="text" class="desc" placeholder="请输入人员的需求" value="{{ demand }}" bindinput="onDemandInput" />
+			<span> 老师要求</span>
+			<textarea type="text" class="desc" placeholder="请输入老师的要求" value="{{ demand }}" bindinput="onDemandInput" />
 		</view>
 		<van-divider />
 		<view class="btn">
@@ -91,7 +84,7 @@
 <van-action-sheet show="{{ show }}" title="用工时间" bind:close="onClose">
 	<view class="action-container">
 		<van-tabs active="{{ tabActive }}" bind:change="onTabChange" style="width: 100%;" animated wx:if="{{ show }}">
-			<van-tab title="临时兼职">
+			<van-tab title="临时家教">
 				<van-tree-select
 					items="{{ shortTimeitems }}"
 					main-active-index="{{ short.mainActiveIndex }}"
@@ -104,7 +97,7 @@
 				<van-divider />
 				<button style="width: 100%" bindtap="onTimeConfirm">完成</button>
 			</van-tab>
-			<van-tab title="长期兼职">
+			<van-tab title="长期家教">
 				<van-tree-select
 					items="{{ longTimeitems }}"
 					main-active-index="{{ long.mainActiveIndex }}"

@@ -1,14 +1,18 @@
 {
   "pages": [
     "pages/home/home",
-    "pages/job/job",
-    "pages/my/my",
     "pages/publish/publish",
+    "pages/takeawayWork/takeawayWork",
+    "pages/test/test",
     "pages/edit/edit",
+    "pages/teacher/teacher",
+    "pages/takeaway/takeaway",
+    "pages/my/my",
     "pages/verify/verify",
+    "pages/job/job",
     "pages/proxy/proxy",
     "pages/resume/resume",
-    "pages/test/test"
+    "pages/log/log"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -30,16 +34,16 @@
         "selectedIconPath": "assets/candidate-active.png"
       },
       {
-        "pagePath": "pages/job/job",
-        "text": "工作",
-        "iconPath": "assets/job.png",
-        "selectedIconPath": "assets/job-active.png"
+        "pagePath": "pages/takeawayWork/takeawayWork",
+        "text": "跑腿中",
+        "iconPath": "assets/takeaway.png",
+        "selectedIconPath": "assets/takeaway-active.png"
       },
       {
-        "pagePath": "pages/publish/publish",
-        "text": "发布",
-        "iconPath": "assets/publish.png",
-        "selectedIconPath": "assets/publish-active.png"
+        "pagePath": "pages/job/job",
+        "text": "招聘中",
+        "iconPath": "assets/job.png",
+        "selectedIconPath": "assets/job-active.png"
       },
       {
         "pagePath": "pages/my/my",
@@ -59,7 +63,13 @@
   "requiredPrivateInfos": [
     "chooseAddress",
     "getLocation",
-    "chooseLocation"
+    "chooseLocation",
+    "startLocationUpdate",
+    "startLocationUpdateBackground",
+    "onLocationChange"
+  ],
+  "requiredBackgroundModes": [
+    "location"
   ],
   "usingComponents": {
     "van-dropdown-menu": "./dist/dropdown-menu/index",
@@ -83,6 +93,8 @@
     "van-collapse": "./dist/collapse/index",
     "van-collapse-item": "./dist/collapse-item/index",
     "van-circle": "./dist/circle/index",
-    "van-stepper": "./dist/stepper/index"
+    "van-stepper": "./dist/stepper/index",
+    "van-datetime-picker": "./dist/datetime-picker/index",
+    "van-progress": "./dist/progress/index"
   }
 }
